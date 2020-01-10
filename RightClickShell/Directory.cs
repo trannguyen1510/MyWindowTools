@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 using Microsoft.Win32;
 namespace RightClickShell
 {
+    [XmlInclude(typeof(RightClickShell))]
     [XmlInclude(typeof(ExecuteAble))]
     [Serializable]
     public class Directory : RightClickShell,ISerializable
