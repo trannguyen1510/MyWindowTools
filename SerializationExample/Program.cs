@@ -10,30 +10,29 @@ using System.Xml.Serialization;
 using Microsoft.Win32;
 
 // Another Library included in project
-using RightClickShell;
+using RightClickShells;
 
+// This project is for testing and demonstrating, it will be deleted 
+//
 namespace SerializationExample
 {
     class Program
     {
         static void Main(string[] args)
         {
-            RightClickShell.Directory execute = new RightClickShell.Directory(Registry.ClassesRoot.OpenSubKey("Directory\\Background"));
+            DirectoryShell execute = new DirectoryShell(Registry.ClassesRoot.OpenSubKey("Directory\\Background"));
             FileStream fs = new FileStream("BackGroundShortcuts.xml", FileMode.OpenOrCreate);
-            XmlSerializer xmlSerializer_background = new XmlSerializer(typeof(RightClickShell.Directory));
+            XmlSerializer xmlSerializer_background = new XmlSerializer(typeof(DirectoryShell));
             xmlSerializer_background.Serialize(fs, execute);
             fs.Close();
             fs = new FileStream("BackGroundShortcuts.xml", FileMode.OpenOrCreate);
-            RightClickShell.Directory directory = (RightClickShell.Directory)xmlSerializer_background.Deserialize(fs);
-            foreach(RightClickShell.RightClickShell child in directory.Children)
+            DirectoryShell directory = (DirectoryShell)xmlSerializer_background.Deserialize(fs);
+            foreach(RightClickShell child in directory.Children)
             {
-                ExecuteAble t;
-                switch (child.type)
+                ExecuteAbleShell t;
+                if (child.type== RightClickShellType.ExecutableShell)
                 {
-                    case RightClickShellType.Directory:
-                        continue;
-                    case RightClickShellType.Executable:
-                        t = (ExecuteAble)child;
+                        t = (ExecuteAbleShell)child;
                         Console.WriteLine(t.Command);
                         break;
                 }

@@ -65,9 +65,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RightClickShell\RightClickShell.csproj">
+    <ProjectReference Include="..\RightClickShell\RightClickShells.csproj">
       <Project>{9b61fcab-74f5-4711-9c98-5c24507f0980}</Project>
-      <Name>RightClickShell</Name>
+      <Name>RightClickShells</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

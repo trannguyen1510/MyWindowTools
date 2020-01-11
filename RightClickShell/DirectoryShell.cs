@@ -6,22 +6,22 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using System.Runtime.Serialization;
 using Microsoft.Win32;
-namespace RightClickShell
+namespace RightClickShells
 {
     [XmlInclude(typeof(RightClickShell))]
-    [XmlInclude(typeof(ExecuteAble))]
+    [XmlInclude(typeof(ExecuteAbleShell))]
     [Serializable]
-    public class Directory : RightClickShell,ISerializable
+    public class DirectoryShell : RightClickShell,ISerializable
     {
         public List<RightClickShell> Children= new List<RightClickShell>();
-        public Directory()
+        public DirectoryShell()
         {
-            this.type = RightClickShellType.Directory;
+            this.type = RightClickShellType.DirectoryShell;
         }
-        public Directory(Microsoft.Win32.RegistryKey registryKey)
+        public DirectoryShell(Microsoft.Win32.RegistryKey registryKey)
         {
             //Sub key named shell is a children container
-            if(GetTypeOfRegistryKey(registryKey)==RightClickShellType.Directory)
+            if(GetTypeOfRegistryKey(registryKey)==RightClickShellType.DirectoryShell)
             {
                 RegistryKey ShellKey = registryKey.OpenSubKey(@"shell");
                 if (ShellKey != null)
@@ -31,11 +31,11 @@ namespace RightClickShell
                         RegistryKey childkey = ShellKey.OpenSubKey(subkey);
                         switch (GetTypeOfRegistryKey(childkey))
                         {
-                            case RightClickShellType.Directory:
-                                Children.Add(new Directory(childkey));
+                            case RightClickShellType.DirectoryShell:
+                                Children.Add(new DirectoryShell(childkey));
                                 break;
-                            case RightClickShellType.Executable:
-                                Children.Add(new ExecuteAble(childkey));
+                            case RightClickShellType.ExecutableShell:
+                                Children.Add(new ExecuteAbleShell(childkey));
                                 break;
 
                         }
@@ -44,11 +44,11 @@ namespace RightClickShell
 
             }
             
-            this.type = RightClickShellType.Directory;
+            this.type = RightClickShellType.DirectoryShell;
         }
-        Directory(SerializationInfo info, StreamingContext context):base(info,context)
+        DirectoryShell(SerializationInfo info, StreamingContext context):base(info,context)
         {
-            this.type = RightClickShellType.Directory;
+            this.type = RightClickShellType.DirectoryShell;
             this.Children.Add((RightClickShell)info.GetValue("Children",typeof(RightClickShell)));
         }
         public void GetObjectData(SerializationInfo info, StreamingContext context)

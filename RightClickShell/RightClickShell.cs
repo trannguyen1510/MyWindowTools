@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using System.Runtime.Serialization;
 using Microsoft.Win32;
-namespace RightClickShell
+namespace RightClickShells
 {
     //[XmlInclude(typeof(Directory))]
     [Serializable]
@@ -40,10 +40,10 @@ namespace RightClickShell
             foreach (string s in input.GetSubKeyNames())
             {
                 if (s == "shell" || s == "Shell")
-                    return RightClickShellType.Directory;
+                    return RightClickShellType.DirectoryShell;
                 if (s == "command" || s == "command")
                 {
-                    return RightClickShellType.Executable;
+                    return RightClickShellType.ExecutableShell;
                 }
             }
             return RightClickShellType.Null;

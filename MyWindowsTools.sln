@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyWindowsTools", "MyWindows
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerializationExample", "SerializationExample\SerializationExample.csproj", "{67020F24-5EF1-4C2C-BA66-466D83315C0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RightClickShell", "RightClickShell\RightClickShell.csproj", "{9B61FCAB-74F5-4711-9C98-5C24507F0980}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RightClickShells", "RightClickShell\RightClickShells.csproj", "{9B61FCAB-74F5-4711-9C98-5C24507F0980}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestRegistry", "TestRegistry\TestRegistry.csproj", "{34B9AF1E-F318-4B55-B623-6CB2C3088269}"
 EndProject

@@ -1,10 +1,10 @@
-﻿namespace RightClickShell
+﻿namespace RightClickShells
 {
     public enum RightClickShellType
     {
         Null = -1,
-        Directory = 0,
-        Executable = 1
+        DirectoryShell = 0,
+        ExecutableShell = 1
     }
 
 }

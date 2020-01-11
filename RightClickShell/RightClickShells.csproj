@@ -41,9 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Directory.cs" />
+    <Compile Include="DirectoryShell.cs" />
     <Compile Include="Enums.cs" />
-    <Compile Include="ExecuteAble.cs" />
+    <Compile Include="ExecuteAbleShell.cs" />
     <Compile Include="RightClickShell.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

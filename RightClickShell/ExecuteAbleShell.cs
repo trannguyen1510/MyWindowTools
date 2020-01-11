@@ -8,27 +8,26 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 using System.Runtime.Serialization;
 using Microsoft.Win32;
-namespace RightClickShell
+namespace RightClickShells
 {
     //[XmlInclude(typeof(Directory))]
     [Serializable]
-    public class ExecuteAble : RightClickShell,ISerializable
+    public class ExecuteAbleShell : RightClickShell,ISerializable
     {
         
         public String Command;
-        public ExecuteAble()
+        public ExecuteAbleShell()
         {
-            this.type = RightClickShellType.Executable;
+            this.type = RightClickShellType.DirectoryShell;
         }
-        public ExecuteAble(RegistryKey registryKey)
+        public ExecuteAbleShell(RegistryKey registryKey)
         {
-            this.type = GetTypeOfRegistryKey(registryKey);
+            this.type = RightClickShellType.ExecutableShell;
             Command = (String)registryKey.OpenSubKey("command").GetValue("");
-            
         }
-        ExecuteAble(SerializationInfo info, StreamingContext context):base(info,context)
+        ExecuteAbleShell(SerializationInfo info, StreamingContext context):base(info,context)
         {
-            this.type = RightClickShellType.Executable;
+            this.type = RightClickShellType.ExecutableShell;
             Command = info.GetString("Command");
         }
         public void GetObjectData(SerializationInfo info, StreamingContext context)
