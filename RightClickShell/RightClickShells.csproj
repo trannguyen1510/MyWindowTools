@@ -41,10 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DirectoryShell.cs" />
-    <Compile Include="Enums.cs" />
-    <Compile Include="ExecuteAbleShell.cs" />
-    <Compile Include="RightClickShell.cs" />
+    <Compile Include="Objects\DirectoryShell.cs" />
+    <Compile Include="Objects\Enums.cs" />
+    <Compile Include="Objects\ExecuteAbleShell.cs" />
+    <Compile Include="Objects\RightClickShell.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
