@@ -12,7 +12,7 @@ using Microsoft.Win32;
 // Another Library included in project
 using RightClickShells;
 
-// This project is for testing and demonstrating, it will be deleted 
+// This project is for testing and demonstrating, it will be deleted
 //
 namespace SerializationExample
 {
