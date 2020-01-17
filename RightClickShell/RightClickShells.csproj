@@ -7,8 +7,8 @@
     <ProjectGuid>{9B61FCAB-74F5-4711-9C98-5C24507F0980}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RightClickShell</RootNamespace>
-    <AssemblyName>RightClickShell</AssemblyName>
+    <RootNamespace>RightClickShells</RootNamespace>
+    <AssemblyName>RightClickShells</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DirectoryShellCursor.cs" />
+    <Compile Include="InsertDeleteManager.cs" />
     <Compile Include="Objects\DirectoryShell.cs" />
     <Compile Include="Objects\Enums.cs" />
     <Compile Include="Objects\ExecuteAbleShell.cs" />

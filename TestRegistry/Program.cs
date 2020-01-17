@@ -10,10 +10,10 @@ namespace TestRegistry
     {
         static void Main(string[] args)
         {
-            RegistryKey x = Registry.ClassesRoot.OpenSubKey(@"Directory\\Background\\shell");
-            RegistryKey xx = x.OpenSubKey("cmd\\command");
-            Console.WriteLine(xx.GetValue(""));
-
+            int[] a = new int[10];
+            a[0] = 10;
+            int x = a[0];
+            Console.WriteLine(Object.ReferenceEquals(a[0], x));
         }
     }
 }

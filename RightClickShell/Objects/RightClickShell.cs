@@ -10,16 +10,16 @@ namespace RightClickShells
 {
     //[XmlInclude(typeof(Directory))]
     [Serializable]
-    public class RightClickShell :ISerializable
+    public class RightClickShell : ISerializable
     {
-        [XmlAttribute]protected String name;
-        [XmlAttribute]protected String icon;
-        [XmlAttribute]protected String position;
-        [XmlAttribute] protected String ShowWhileHold;
-        [NonSerialized]public RightClickShellType type;
+        [XmlAttribute] public String name;
+        [XmlAttribute] public String icon;
+        [XmlAttribute] public String position;
+        [XmlAttribute] public String ShowWhileHold;
+        [NonSerialized] public DirectoryShell Parent = null;
+        [NonSerialized] public RightClickShellType type;
         public RightClickShell()
         {
-   
         }
         public RightClickShell(SerializationInfo info, StreamingContext context)
         {
@@ -48,6 +48,16 @@ namespace RightClickShells
             }
             return RightClickShellType.Null;
         }
+        public String getFullPath()
+        {
+            String res = "/" + this.name;
+            DirectoryShell trace_back = this.Parent;
+            while (trace_back != null)
+            {
+                res = "/" + trace_back + res;
+                trace_back = trace_back.Parent;
+            }
+            return res;
+        }
     }
-    
 }

@@ -11,6 +11,7 @@ using Microsoft.Win32;
 
 // Another Library included in project
 using RightClickShells;
+using System.Windows.Forms;
 
 // This project is for testing and demonstrating, it will be deleted
 //
@@ -20,27 +21,44 @@ namespace SerializationExample
     {
         static void Main(string[] args)
         {
-            DirectoryShell execute = new DirectoryShell(Registry.ClassesRoot.OpenSubKey("Directory\\Background"));
-            FileStream fs = new FileStream("BackGroundShortcuts.xml", FileMode.OpenOrCreate);
+
+            //DirectoryShell execute = new DirectoryShell(Registry.ClassesRoot.OpenSubKey("Directory\\Background"));
+            //FileStream fs = new FileStream("BackGroundShortcuts.xml", FileMode.OpenOrCreate);
+            //XmlSerializer xmlSerializer_background = new XmlSerializer(typeof(DirectoryShell));
+            //xmlSerializer_background.Serialize(fs, execute);
+            //fs.Close();
             XmlSerializer xmlSerializer_background = new XmlSerializer(typeof(DirectoryShell));
-            xmlSerializer_background.Serialize(fs, execute);
-            fs.Close();
-            fs = new FileStream("BackGroundShortcuts.xml", FileMode.OpenOrCreate);
+            FileStream fs = new FileStream("BackGroundShortcuts.xml", FileMode.OpenOrCreate);
             DirectoryShell directory = (DirectoryShell)xmlSerializer_background.Deserialize(fs);
-            foreach(RightClickShell child in directory.Children)
+            foreach (RightClickShell child in directory.Children)
             {
                 ExecuteAbleShell t;
-                if (child.type== RightClickShellType.ExecutableShell)
+                if (child.type == RightClickShellType.ExecutableShell)
                 {
-                        t = (ExecuteAbleShell)child;
-                        Console.WriteLine(t.Command);
-                        break;
+                    t = (ExecuteAbleShell)child;
+                    Console.WriteLine(t.Command);
+                    break;
                 }
             }
+            InsertDeleteManager insert_deleted = new InsertDeleteManager(directory);
+            insert_deleted.Delete(ref directory, ref directory.Children.ToArray()[0]);
+            RightClickShell insert = new ExecuteAbleShell() { Command = "Do something" };
+            //Console.WriteLine(Object.ReferenceEquals(insert, (ExecuteAbleShell)insert));
+            insert_deleted.Add(ref directory, ref insert);
+            Console.WriteLine(directory.Children.Contains(insert));
             fs.Close();
         }
-        
+        //static void Main(string[] args)
+        //{
+        //    MyClass x = new MyClass();
+        //    List<MyClass> Lx = new List<MyClass>();
+        //    Lx.Add(x);
+        //    MyClass[] arr = Lx.ToArray();
+        //    x.RegName = "one";
+        //    Console.WriteLine(arr[0].RegName);
+        //}
     }
+    
     /// <summary>
     /// this class is for demmonstrations
     /// </summary>
