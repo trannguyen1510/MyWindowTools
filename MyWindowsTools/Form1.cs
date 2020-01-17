@@ -18,6 +18,7 @@ namespace MyWindowsTools
         {
             InitializeComponent();
         }
+<<<<<<< HEAD
         private static void PopulateTreeView(TreeView treeView, IEnumerable<string> paths, char pathSeparator)
         {
             TreeNode lastNode = null;
@@ -75,5 +76,7 @@ namespace MyWindowsTools
         {
 
         }
+=======
+>>>>>>> 10f9f24589d4ff616739b028a66ca456ac7b4b24
     }
 }
