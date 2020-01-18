@@ -12,10 +12,10 @@ namespace RightClickShells
     [Serializable]
     public class RightClickShell :ISerializable
     {
-        [XmlAttribute]protected String name;
-        [XmlAttribute]protected String icon;
-        [XmlAttribute]protected String position;
-        [XmlAttribute] protected String ShowWhileHold;
+        [XmlAttribute]public String name;
+        [XmlAttribute]public String icon;
+        [XmlAttribute]public String position;
+        [XmlAttribute]public String ShowWhileHold;
         [NonSerialized]public RightClickShellType type;
         public RightClickShell()
         {
@@ -24,13 +24,13 @@ namespace RightClickShells
         public RightClickShell(SerializationInfo info, StreamingContext context)
         {
             name = info.GetString("Name");
-            icon = info.GetString("Icon");
-            ShowWhileHold = info.GetString("ShowWhileHold");
-            position = info.GetString("position");
+            //icon = info.GetString("Icon");
+            //ShowWhileHold = info.GetString("ShowWhileHold");
+            //position = info.GetString("position");
         }
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            //info.AddValue("Name", name, name.GetType());
+            info.AddValue("Name", name, name.GetType());
             //info.AddValue("Icon", name, name.GetType());
             //info.AddValue("Position", position, position.GetType());
             //info.AddValue("ShowWhileHold", ShowWhileHold, ShowWhileHold.GetType());
@@ -41,7 +41,7 @@ namespace RightClickShells
             {
                 if (s == "shell" || s == "Shell")
                     return RightClickShellType.DirectoryShell;
-                if (s == "command" || s == "command")
+                if (s == "command" || s == "Command")
                 {
                     return RightClickShellType.ExecutableShell;
                 }

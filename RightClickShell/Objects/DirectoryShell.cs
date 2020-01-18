@@ -23,6 +23,7 @@ namespace RightClickShells
             //Sub key named shell is a children container
             if(GetTypeOfRegistryKey(registryKey)==RightClickShellType.DirectoryShell)
             {
+                this.name = registryKey.Name.Split('\\')[registryKey.Name.Split('\\').Length-1];
                 RegistryKey ShellKey = registryKey.OpenSubKey(@"shell");
                 if (ShellKey != null)
                 {

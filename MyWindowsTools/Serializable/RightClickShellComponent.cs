@@ -21,9 +21,5 @@ namespace MyWindowsTools.Serializable
                 Console.WriteLine(x);
             }
         }
-<<<<<<< HEAD
-=======
-
->>>>>>> 10f9f24589d4ff616739b028a66ca456ac7b4b24
     }
 }

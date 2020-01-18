@@ -7,6 +7,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Xml.Serialization;
+using System.Xml;
 using Microsoft.Win32;
 
 // Another Library included in project
@@ -18,28 +19,90 @@ namespace SerializationExample
 {
     class Program
     {
+        static FileStream fs;
+        static XmlSerializer xmlSerializer_background = new XmlSerializer(typeof(DirectoryShell));
+        static DirectoryShell Root = new DirectoryShell() { name = "Root"};
+        static List<RightClickShell> inserted= new List<RightClickShell>();
         static void Main(string[] args)
         {
-            DirectoryShell execute = new DirectoryShell(Registry.ClassesRoot.OpenSubKey("Directory\\Background"));
-            FileStream fs = new FileStream("BackGroundShortcuts.xml", FileMode.OpenOrCreate);
-            XmlSerializer xmlSerializer_background = new XmlSerializer(typeof(DirectoryShell));
-            xmlSerializer_background.Serialize(fs, execute);
-            fs.Close();
-            fs = new FileStream("BackGroundShortcuts.xml", FileMode.OpenOrCreate);
-            DirectoryShell directory = (DirectoryShell)xmlSerializer_background.Deserialize(fs);
-            foreach(RightClickShell child in directory.Children)
+            while (true)
             {
-                ExecuteAbleShell t;
-                if (child.type== RightClickShellType.ExecutableShell)
+                int input;
+                PrintMenu();
+                input = int.Parse(Console.ReadLine());
+                switch (input)
                 {
-                        t = (ExecuteAbleShell)child;
-                        Console.WriteLine(t.Command);
+                    case 1:
+                        Insert();
                         break;
+                    case 2:
+                        Delete();
+                        break;
+                    default:
+                        break;
+                }
+                if (input == 0)
+                {
+                    break;
+                }
+            }
+            
+
+        }
+
+        private static void Delete()
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void Insert()
+        {
+            Console.Write("Name:");
+            String name = Console.ReadLine();
+            Console.Write("Type:");
+            RightClickShellType type = (RightClickShellType)int.Parse(Console.ReadLine());
+            switch (type)
+            {
+                case RightClickShellType.DirectoryShell:
+                    Root.Children.Add(new DirectoryShell() { name = name });
+                    break;
+                case RightClickShellType.ExecutableShell:
+                    Root.Children.Add(new ExecutableShell() { name = name, command ="do something"});
+                    break;
+            }
+        }
+
+        private static void PrintMenu()
+        {
+            Console.Write("Chọn 1 trong những tính năng sau:0\n" +
+                          "1. Thêm vào\n" +
+                          "2. Xóa \n"+
+                          "0. Thoat\n" +
+                          "---------------------------------\n");
+        }
+
+        static void ReadXmlFiles()
+        {
+            fs = new FileStream("Objects", FileMode.OpenOrCreate);
+            DirectoryShell directory = (DirectoryShell)xmlSerializer_background.Deserialize(fs);
+            foreach (RightClickShell child in directory.Children)
+            {
+                ExecutableShell t;
+                if (child.type == RightClickShellType.ExecutableShell)
+                {
+                    t = (ExecutableShell)child;
+                    Console.WriteLine(t.command);
+                    break;
                 }
             }
             fs.Close();
         }
-        
+        static void SerializeDirectoryShell(DirectoryShell root)
+        {
+            fs = new FileStream("Objects", FileMode.OpenOrCreate);
+            xmlSerializer_background.Serialize(fs, root);
+            fs.Close();
+        }
     }
     /// <summary>
     /// this class is for demmonstrations
