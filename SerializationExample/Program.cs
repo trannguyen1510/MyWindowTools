@@ -19,14 +19,27 @@ namespace SerializationExample
 {
     class Program
     {
+        DirectoryShell cursor;
+        DirectoryShell root = new DirectoryShell() { name = "Root" };
         static void Main(string[] args)
         {
+            Program program_obj = new Program();
+            program_obj.cursor = program_obj.root;
+            InsertDeleteManager insert_deleted = new InsertDeleteManager(program_obj.root);
 
-            //DirectoryShell execute = new DirectoryShell(Registry.ClassesRoot.OpenSubKey("Directory\\Background"));
-            //FileStream fs = new FileStream("BackGroundShortcuts.xml", FileMode.OpenOrCreate);
-            //XmlSerializer xmlSerializer_background = new XmlSerializer(typeof(DirectoryShell));
-            //xmlSerializer_background.Serialize(fs, execute);
-            //fs.Close();
+            
+        }
+        public static void SerializeTree()
+        {
+            FileStream fs = new FileStream("BackGroundShortcuts.xml", FileMode.OpenOrCreate);
+            DirectoryShell execute = new DirectoryShell(Registry.ClassesRoot.OpenSubKey("Directory\\Background"));
+            XmlSerializer xmlSerializer_background = new XmlSerializer(typeof(DirectoryShell));
+            xmlSerializer_background.Serialize(fs, execute);
+            fs.Close();
+        }
+
+        public static void DeSerializeTree()
+        {
             XmlSerializer xmlSerializer_background = new XmlSerializer(typeof(DirectoryShell));
             FileStream fs = new FileStream("BackGroundShortcuts.xml", FileMode.OpenOrCreate);
             DirectoryShell directory = (DirectoryShell)xmlSerializer_background.Deserialize(fs);
@@ -40,23 +53,36 @@ namespace SerializationExample
                     break;
                 }
             }
-            InsertDeleteManager insert_deleted = new InsertDeleteManager(directory);
-            insert_deleted.Delete(ref directory, ref directory.Children.ToArray()[0]);
-            RightClickShell insert = new ExecuteAbleShell() { Command = "Do something" };
-            //Console.WriteLine(Object.ReferenceEquals(insert, (ExecuteAbleShell)insert));
-            insert_deleted.Add(ref directory, ref insert);
-            Console.WriteLine(directory.Children.Contains(insert));
-            fs.Close();
         }
-        //static void Main(string[] args)
-        //{
-        //    MyClass x = new MyClass();
-        //    List<MyClass> Lx = new List<MyClass>();
-        //    Lx.Add(x);
-        //    MyClass[] arr = Lx.ToArray();
-        //    x.RegName = "one";
-        //    Console.WriteLine(arr[0].RegName);
-        //}
+        public static void PrintTree(DirectoryShell root,String level_header="")
+        {
+            DirectoryShell current;
+            Console.WriteLine(level_header+ root.name);
+            Queue<DirectoryShell> queue = new Queue<DirectoryShell>();
+            
+            queue.Enqueue(root);
+            while (queue.Count > 0)
+            {
+                current = queue.Dequeue();
+                Console.WriteLine( GetLevel(current) + current.name);
+                foreach (DirectoryShell sub in current.Children)
+                {
+                    queue.Enqueue(sub);
+                }
+            }
+            
+        }
+        public static string GetLevel(DirectoryShell x)
+        {
+            String res = string.Empty;
+            DirectoryShell current = x.Parent;
+            while(current != null)
+            {
+                res += current.name+ "\\" ;
+                current = current.Parent;
+            }
+            return res;
+        }
     }
     
     /// <summary>
