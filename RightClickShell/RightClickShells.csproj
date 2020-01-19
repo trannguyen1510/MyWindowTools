@@ -41,11 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DirectoryShellCursor.cs" />
     <Compile Include="InsertDeleteManager.cs" />
     <Compile Include="Objects\DirectoryShell.cs" />
     <Compile Include="Objects\Enums.cs" />
-    <Compile Include="Objects\ExecuteAbleShell.cs" />
+    <Compile Include="Objects\ExecutableShell.cs" />
     <Compile Include="Objects\RightClickShell.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -8,8 +8,8 @@ namespace RightClickShells
 {
     public class InsertDeleteManager
     {
-        public List<Tuple<DirectoryShell, RightClickShell>> inserted= new List<Tuple<DirectoryShell, RightClickShell>>();
-        public List<Tuple<DirectoryShell,RightClickShell>> deleted = new List<Tuple<DirectoryShell, RightClickShell>>();
+        public List<Tuple<String, String>> inserted= new List<Tuple<String, String>>();
+        public List<Tuple<String,String>> deleted = new List<Tuple<String, String>>();
         public InsertDeleteManager(DirectoryShell root)
         {
         }
@@ -22,17 +22,17 @@ namespace RightClickShells
         {
             parent.Children.Add(the_inserted);
             the_inserted.Parent = parent;
-            inserted.Add(new Tuple<DirectoryShell, RightClickShell>(parent,the_inserted));
+            inserted.Add(new Tuple<String, String>(parent.getFullPath(),the_inserted.name));
         }
         /// <summary>
         /// List of the key to delete in a registry
         /// </summary>
         /// <param name="parent"></param>
         /// <param name="the_deleted"></param>
-        public void Delete(ref DirectoryShell parent, ref RightClickShell the_deleted)
+        public void Delete(ref RightClickShell the_deleted)
         {
-            deleted.Add(new Tuple<DirectoryShell, RightClickShell>(parent,the_deleted));
-            parent.Children.Remove(the_deleted);
+            deleted.Add(new Tuple<String, String>(the_deleted.Parent.getFullPath(),the_deleted.name));
+            the_deleted.Parent.Children.Remove(the_deleted);
         }       
         /// <summary>
         /// Change A registry and serialize a new tree of shells
