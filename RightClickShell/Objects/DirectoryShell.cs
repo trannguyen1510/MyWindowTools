@@ -58,6 +58,7 @@ namespace RightClickShells
 
         public void SetParentForChild()
         {
+
             foreach (RightClickShell child in Children)
             {
                 child.Parent = this;

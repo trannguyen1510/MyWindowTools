@@ -37,17 +37,5 @@ namespace RightClickShells
             base.GetObjectData(info,context);
             info.AddValue("Command", command, command.GetType());
         }
-        [OnDeserialized()]
-        public void KnowingFather(StreamingContext context)
-        {
-            Console.WriteLine(context.Context);
-            Console.WriteLine(context.State);
-            //FileStream fs = new FileStream("Output.txt", FileMode.OpenOrCreate);
-            //byte[] state_bytes = new UTF8Encoding(true).GetBytes(context.State.ToString() + "\n");
-            //byte[] Context_bytes = new UTF8Encoding(true).GetBytes(context.Context.ToString() + "\n");
-            //fs.Write(state_bytes, 0, state_bytes.Length);
-            //fs.Write(Context_bytes, state_bytes.Length, Context_bytes.Length);
-            //fs.Close();
-        }
     }
 }

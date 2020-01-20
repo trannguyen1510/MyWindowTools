@@ -6,4 +6,9 @@
         DirectoryShell=0,
         ExecutableShell=1
     }
+    public enum RightClickShellActionType
+    {
+        Delete=-1,
+        Add=1
+    }
 }

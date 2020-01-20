@@ -20,14 +20,14 @@ namespace SerializationExample
 {
     class Program
     {
-        static DirectoryShell cursor;
+        static RightClickShell cursor;
         static DirectoryShell root;
         static InsertDeleteManager insert_deleted = new InsertDeleteManager((DirectoryShell)root);
 
         static void Main(string[] args)
         {
-            //root = new DirectoryShell() { name = "Root" };
-            root = DeSerializeTree();
+            root = new DirectoryShell() { name = "Directory\\Background" };
+            //root = DeSerializeTree();
             root.SetParentForChild();
             cursor = (DirectoryShell)root;
             while (true)
@@ -51,6 +51,7 @@ namespace SerializationExample
                         break;
                     default:
                         SerializeTree();
+                        insert_deleted.ApplyChange();
                         break;
                 }
                 if (input == 0)
@@ -61,7 +62,7 @@ namespace SerializationExample
 
         }
 
-        private static void CursorAccess(ref DirectoryShell cursor)
+        private static void CursorAccess(ref RightClickShell cursor)
         {
             PrintMap(cursor);
             int input = int.Parse(Console.ReadLine());
@@ -73,22 +74,24 @@ namespace SerializationExample
                     cursor = cursor.Parent;
                     break;
                 default:
-                    cursor = (DirectoryShell)cursor.Children[input];
+                    cursor = ((DirectoryShell)cursor).Children[input];
                     break;
             }
         }
 
-        private static void PrintMap(DirectoryShell cursor)
+        private static void PrintMap(RightClickShell cursor)
         {
-           foreach(RightClickShell x in cursor.Children)
+            if (cursor.type == RightClickShellType.ExecutableShell)
+                return;
+           foreach(RightClickShell x in ((DirectoryShell)cursor).Children)
             {
-                if(x.type==RightClickShellType.DirectoryShell)
-                    Console.WriteLine(cursor.Children.IndexOf(x).ToString()+ ". "+x.name);
+                Console.WriteLine(((DirectoryShell)cursor).Children.IndexOf(x).ToString()+ ". "+x.name);
             }
         }
 
         public static void SerializeTree()
         {
+            File.WriteAllText("BackGroundShortcuts.xml","");
             FileStream fs = new FileStream("BackGroundShortcuts.xml", FileMode.OpenOrCreate);
             XmlSerializer xmlSerializer_background = new XmlSerializer(typeof(DirectoryShell));
             xmlSerializer_background.Serialize(fs, root);
@@ -105,7 +108,7 @@ namespace SerializationExample
         }
         private static void Delete()
         {
-
+            insert_deleted.Delete(ref cursor);
             cursor.Parent.Children.Remove(cursor);
         }
 
@@ -148,7 +151,7 @@ namespace SerializationExample
                         break;
 
                 }
-                Console.WriteLine(current.getFullPath());
+                Console.WriteLine(current.getRegistryPath());
                 
             }
             
