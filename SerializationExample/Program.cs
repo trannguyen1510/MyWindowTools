@@ -26,8 +26,8 @@ namespace SerializationExample
 
         static void Main(string[] args)
         {
-            root = new DirectoryShell() { name = "Directory\\Background" };
-            //root = DeSerializeTree();
+            //root = new DirectoryShell() { name = "Directory\\Background" };
+            root = DeSerializeTree();
             root.SetParentForChild();
             cursor = (DirectoryShell)root;
             while (true)
@@ -108,8 +108,10 @@ namespace SerializationExample
         }
         private static void Delete()
         {
+            DirectoryShell p = cursor.Parent;
             insert_deleted.Delete(ref cursor);
-            cursor.Parent.Children.Remove(cursor);
+            //cursor = p;
+            //cursor.Parent.Children.Remove(cursor);
         }
 
         private static void Insert()

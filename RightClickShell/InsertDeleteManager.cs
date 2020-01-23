@@ -61,7 +61,8 @@ namespace RightClickShells
 
         private void RegistryDelete(DirectoryShell parent, RightClickShell affected)
         {
-            throw new NotImplementedException();
+            RegistryKey root = Registry.ClassesRoot.OpenSubKey(parent.getRegistryPath()+"\\shell", true);
+            root.DeleteSubKeyTree(affected.name);
         }
 
         private void RegistryAdd(DirectoryShell parent, RightClickShell affected)
