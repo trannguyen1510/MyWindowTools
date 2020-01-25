@@ -56,9 +56,6 @@ namespace MyWindowsTools
             var paths = new List<string>
                         {
                             @"a\b\c",
-                            @"a\a\a",
-                            @"a\a\b",
-                            @"a\a\c"
                         };
 
             treeView1.PathSeparator = @"\";
@@ -71,9 +68,12 @@ namespace MyWindowsTools
         {
             treeView1.CollapseAll();
         }
+<<<<<<< HEAD
         void A(int x,int y)
         {
 
         }
+=======
+>>>>>>> 235ee4975e43933d564adf23874f38d11570d80a
     }
 }
