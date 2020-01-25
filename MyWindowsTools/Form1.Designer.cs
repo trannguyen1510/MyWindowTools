@@ -27,8 +27,7 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
-        {
-<<<<<<< HEAD
+        {   
             this.panel1 = new System.Windows.Forms.Panel();
             this.panelTreeview = new System.Windows.Forms.Panel();
             this.treeView1 = new System.Windows.Forms.TreeView();
@@ -263,15 +262,6 @@
         private System.Windows.Forms.Label lblSource;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Button brnCollapseAll;
-=======
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
-        }
-
-        #endregion
->>>>>>> 10f9f24589d4ff616739b028a66ca456ac7b4b24
     }
 }
 
