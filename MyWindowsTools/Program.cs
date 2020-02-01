@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.Xml.Serialization;
 using Microsoft.Win32;
 using RightClickShells;
+//using RightClickShells;
 
 namespace MyWindowsTools
 {
@@ -19,11 +20,6 @@ namespace MyWindowsTools
         [STAThread]
         static void Main()
         {
-            DirectoryShell execute = new DirectoryShell(Registry.ClassesRoot.OpenSubKey("Directory\\Background"));
-            FileStream fs = new FileStream("BackGroundShortcuts.xml", FileMode.OpenOrCreate);
-            XmlSerializer xmlSerializer_background = new XmlSerializer(typeof(DirectoryShell));
-            xmlSerializer_background.Serialize(fs, execute);
-            fs.Close();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());

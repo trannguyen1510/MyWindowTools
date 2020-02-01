@@ -33,13 +33,14 @@
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.panelFuntion = new System.Windows.Forms.Panel();
             this.panelButton = new System.Windows.Forms.Panel();
+            this.rdBtnExecutable = new System.Windows.Forms.RadioButton();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.rdBtnDirectory = new System.Windows.Forms.RadioButton();
             this.btnApply = new System.Windows.Forms.Button();
             this.btnExpandCollapse = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
-            this.btnAddShortcut = new System.Windows.Forms.Button();
-            this.btnAddfolder = new System.Windows.Forms.Button();
-            this.btnBrowse = new System.Windows.Forms.Button();
+            this.btnAdd = new System.Windows.Forms.Button();
             this.panelView = new System.Windows.Forms.Panel();
             this.txtTarget = new System.Windows.Forms.TextBox();
             this.txtSource = new System.Windows.Forms.TextBox();
@@ -47,8 +48,8 @@
             this.lblName = new System.Windows.Forms.Label();
             this.lblTarget = new System.Windows.Forms.Label();
             this.lblSource = new System.Windows.Forms.Label();
+            this.btnBrowse = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.btnCancel = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panelTreeview.SuspendLayout();
             this.panelFuntion.SuspendLayout();
@@ -93,24 +94,56 @@
             // 
             // panelButton
             // 
+            this.panelButton.Controls.Add(this.rdBtnExecutable);
             this.panelButton.Controls.Add(this.btnCancel);
+            this.panelButton.Controls.Add(this.rdBtnDirectory);
             this.panelButton.Controls.Add(this.btnApply);
             this.panelButton.Controls.Add(this.btnExpandCollapse);
             this.panelButton.Controls.Add(this.btnDelete);
             this.panelButton.Controls.Add(this.btnEdit);
-            this.panelButton.Controls.Add(this.btnAddShortcut);
-            this.panelButton.Controls.Add(this.btnAddfolder);
-            this.panelButton.Controls.Add(this.btnBrowse);
+            this.panelButton.Controls.Add(this.btnAdd);
             this.panelButton.Location = new System.Drawing.Point(6, 206);
             this.panelButton.Name = "panelButton";
             this.panelButton.Size = new System.Drawing.Size(489, 235);
             this.panelButton.TabIndex = 4;
             // 
+            // rdBtnExecutable
+            // 
+            this.rdBtnExecutable.AutoSize = true;
+            this.rdBtnExecutable.Location = new System.Drawing.Point(16, 57);
+            this.rdBtnExecutable.Name = "rdBtnExecutable";
+            this.rdBtnExecutable.Size = new System.Drawing.Size(98, 21);
+            this.rdBtnExecutable.TabIndex = 6;
+            this.rdBtnExecutable.TabStop = true;
+            this.rdBtnExecutable.Text = "Exacutable";
+            this.rdBtnExecutable.UseVisualStyleBackColor = true;
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(35, 179);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(185, 38);
+            this.btnCancel.TabIndex = 9;
+            this.btnCancel.Text = "Revert";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // rdBtnDirectory
+            // 
+            this.rdBtnDirectory.AutoSize = true;
+            this.rdBtnDirectory.Location = new System.Drawing.Point(16, 20);
+            this.rdBtnDirectory.Name = "rdBtnDirectory";
+            this.rdBtnDirectory.Size = new System.Drawing.Size(86, 21);
+            this.rdBtnDirectory.TabIndex = 6;
+            this.rdBtnDirectory.TabStop = true;
+            this.rdBtnDirectory.Text = "Directory";
+            this.rdBtnDirectory.UseVisualStyleBackColor = true;
+            // 
             // btnApply
             // 
-            this.btnApply.Location = new System.Drawing.Point(383, 179);
+            this.btnApply.Location = new System.Drawing.Point(289, 179);
             this.btnApply.Name = "btnApply";
-            this.btnApply.Size = new System.Drawing.Size(75, 38);
+            this.btnApply.Size = new System.Drawing.Size(169, 38);
             this.btnApply.TabIndex = 8;
             this.btnApply.Text = "Apply";
             this.btnApply.UseVisualStyleBackColor = true;
@@ -118,9 +151,9 @@
             // 
             // btnExpandCollapse
             // 
-            this.btnExpandCollapse.Location = new System.Drawing.Point(23, 25);
+            this.btnExpandCollapse.Location = new System.Drawing.Point(289, 20);
             this.btnExpandCollapse.Name = "btnExpandCollapse";
-            this.btnExpandCollapse.Size = new System.Drawing.Size(128, 41);
+            this.btnExpandCollapse.Size = new System.Drawing.Size(169, 43);
             this.btnExpandCollapse.TabIndex = 7;
             this.btnExpandCollapse.Text = "Expand/Collapse";
             this.btnExpandCollapse.UseVisualStyleBackColor = true;
@@ -128,9 +161,9 @@
             // 
             // btnDelete
             // 
-            this.btnDelete.Location = new System.Drawing.Point(383, 95);
+            this.btnDelete.Location = new System.Drawing.Point(289, 105);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(75, 38);
+            this.btnDelete.Size = new System.Drawing.Size(169, 38);
             this.btnDelete.TabIndex = 4;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
@@ -138,41 +171,23 @@
             // 
             // btnEdit
             // 
-            this.btnEdit.Location = new System.Drawing.Point(277, 94);
+            this.btnEdit.Location = new System.Drawing.Point(35, 105);
             this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(75, 38);
+            this.btnEdit.Size = new System.Drawing.Size(185, 38);
             this.btnEdit.TabIndex = 3;
             this.btnEdit.Text = "Edit";
             this.btnEdit.UseVisualStyleBackColor = true;
+            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
             // 
-            // btnAddShortcut
+            // btnAdd
             // 
-            this.btnAddShortcut.Location = new System.Drawing.Point(148, 94);
-            this.btnAddShortcut.Name = "btnAddShortcut";
-            this.btnAddShortcut.Size = new System.Drawing.Size(98, 40);
-            this.btnAddShortcut.TabIndex = 2;
-            this.btnAddShortcut.Text = "Add Shortcut";
-            this.btnAddShortcut.UseVisualStyleBackColor = true;
-            // 
-            // btnAddfolder
-            // 
-            this.btnAddfolder.Location = new System.Drawing.Point(23, 93);
-            this.btnAddfolder.Name = "btnAddfolder";
-            this.btnAddfolder.Size = new System.Drawing.Size(96, 40);
-            this.btnAddfolder.TabIndex = 1;
-            this.btnAddfolder.Text = "Add folder";
-            this.btnAddfolder.UseVisualStyleBackColor = true;
-            this.btnAddfolder.Click += new System.EventHandler(this.btnAddfolder_Click);
-            // 
-            // btnBrowse
-            // 
-            this.btnBrowse.Location = new System.Drawing.Point(383, 25);
-            this.btnBrowse.Name = "btnBrowse";
-            this.btnBrowse.Size = new System.Drawing.Size(75, 41);
-            this.btnBrowse.TabIndex = 0;
-            this.btnBrowse.Text = "Browse";
-            this.btnBrowse.UseVisualStyleBackColor = true;
-            this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
+            this.btnAdd.Location = new System.Drawing.Point(120, 20);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(100, 58);
+            this.btnAdd.TabIndex = 1;
+            this.btnAdd.Text = "Add";
+            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // panelView
             // 
@@ -182,6 +197,7 @@
             this.panelView.Controls.Add(this.lblName);
             this.panelView.Controls.Add(this.lblTarget);
             this.panelView.Controls.Add(this.lblSource);
+            this.panelView.Controls.Add(this.btnBrowse);
             this.panelView.Location = new System.Drawing.Point(3, 3);
             this.panelView.Name = "panelView";
             this.panelView.Size = new System.Drawing.Size(495, 197);
@@ -189,16 +205,16 @@
             // 
             // txtTarget
             // 
-            this.txtTarget.Location = new System.Drawing.Point(111, 121);
+            this.txtTarget.Location = new System.Drawing.Point(111, 107);
             this.txtTarget.Name = "txtTarget";
-            this.txtTarget.Size = new System.Drawing.Size(327, 22);
+            this.txtTarget.Size = new System.Drawing.Size(218, 22);
             this.txtTarget.TabIndex = 5;
             // 
             // txtSource
             // 
             this.txtSource.Location = new System.Drawing.Point(111, 66);
             this.txtSource.Name = "txtSource";
-            this.txtSource.Size = new System.Drawing.Size(327, 22);
+            this.txtSource.Size = new System.Drawing.Size(218, 22);
             this.txtSource.TabIndex = 4;
             // 
             // txtName
@@ -220,7 +236,7 @@
             // lblTarget
             // 
             this.lblTarget.AutoSize = true;
-            this.lblTarget.Location = new System.Drawing.Point(35, 124);
+            this.lblTarget.Location = new System.Drawing.Point(35, 112);
             this.lblTarget.Name = "lblTarget";
             this.lblTarget.Size = new System.Drawing.Size(50, 17);
             this.lblTarget.TabIndex = 2;
@@ -235,19 +251,19 @@
             this.lblSource.TabIndex = 1;
             this.lblSource.Text = "Source";
             // 
+            // btnBrowse
+            // 
+            this.btnBrowse.Location = new System.Drawing.Point(345, 66);
+            this.btnBrowse.Name = "btnBrowse";
+            this.btnBrowse.Size = new System.Drawing.Size(93, 63);
+            this.btnBrowse.TabIndex = 0;
+            this.btnBrowse.Text = "Browse";
+            this.btnBrowse.UseVisualStyleBackColor = true;
+            this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
+            // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // btnCancel
-            // 
-            this.btnCancel.Location = new System.Drawing.Point(289, 179);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 38);
-            this.btnCancel.TabIndex = 9;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // Form1
             // 
@@ -257,11 +273,11 @@
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
             this.panelTreeview.ResumeLayout(false);
             this.panelFuntion.ResumeLayout(false);
             this.panelButton.ResumeLayout(false);
+            this.panelButton.PerformLayout();
             this.panelView.ResumeLayout(false);
             this.panelView.PerformLayout();
             this.ResumeLayout(false);
@@ -277,8 +293,7 @@
         private System.Windows.Forms.Panel panelButton;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnEdit;
-        private System.Windows.Forms.Button btnAddShortcut;
-        private System.Windows.Forms.Button btnAddfolder;
+        private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Button btnBrowse;
         private System.Windows.Forms.Panel panelView;
         private System.Windows.Forms.TextBox txtTarget;
@@ -291,6 +306,8 @@
         private System.Windows.Forms.Button btnExpandCollapse;
         private System.Windows.Forms.Button btnApply;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.RadioButton rdBtnExecutable;
+        private System.Windows.Forms.RadioButton rdBtnDirectory;
     }
 }
 

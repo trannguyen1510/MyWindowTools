@@ -2,8 +2,13 @@
 {
     public enum RightClickShellType
     {
-        Null = -1,
-        DirectoryShell = 0,
-        ExecutableShell = 1
+        Null=-1,
+        DirectoryShell=0,
+        ExecutableShell=1
+    }
+    public enum RightClickShellActionType
+    {
+        Delete=-1,
+        Add=1
     }
 }
