@@ -60,8 +60,7 @@ namespace SerializationExample
                         CursorAccess(ref cursor);// duyệt cây theo user.
                         break;
                     default:
-                        SerializeTree();// lưu lại.
-                        insert_deleted.ApplyChange();// ghi vào registry
+                        
                         break;
                 }
                 if (input == 0)

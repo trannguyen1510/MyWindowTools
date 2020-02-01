@@ -9,7 +9,15 @@ namespace RightClickShells
 {
     public class InsertDeleteManager
     {
-        public Queue<Tuple<DirectoryShell, RightClickShell,RightClickShellActionType>> changes= new Queue<Tuple<DirectoryShell, RightClickShell, RightClickShellActionType>>();
+        private Queue<Tuple<DirectoryShell, RightClickShell,RightClickShellActionType>> changes= new Queue<Tuple<DirectoryShell, RightClickShell, RightClickShellActionType>>();
+
+        public Queue<Tuple<DirectoryShell, RightClickShell, RightClickShellActionType>> Changes { get => changes; }
+
+        public void Revert()
+        {
+            changes.Clear();
+        }
+
         public InsertDeleteManager(DirectoryShell root)
         {
         }
@@ -24,7 +32,7 @@ namespace RightClickShells
                 return;
             ((DirectoryShell)parent).Children.Add(the_inserted);
             the_inserted.Parent = (DirectoryShell)parent;
-            changes.Enqueue(new Tuple<DirectoryShell, RightClickShell, RightClickShellActionType>((DirectoryShell)parent, the_inserted, RightClickShellActionType.Add));
+            Changes.Enqueue(new Tuple<DirectoryShell, RightClickShell, RightClickShellActionType>((DirectoryShell)parent, the_inserted, RightClickShellActionType.Add));
         }
         /// <summary>
         /// List of the key to delete in a registry
@@ -33,7 +41,7 @@ namespace RightClickShells
         /// <param name="the_deleted"></param>
         public void Delete(ref RightClickShell the_deleted)
         {
-            changes.Enqueue(new Tuple<DirectoryShell, RightClickShell, RightClickShellActionType>(the_deleted.Parent, the_deleted, RightClickShellActionType.Delete));
+            Changes.Enqueue(new Tuple<DirectoryShell, RightClickShell, RightClickShellActionType>(the_deleted.Parent, the_deleted, RightClickShellActionType.Delete));
             the_deleted.Parent.Children.Remove(the_deleted);
         }
         /// <summary>
@@ -41,12 +49,12 @@ namespace RightClickShells
         /// </summary>
         public void ApplyChange()
         {
-            while (changes.Count>0)
+            while (Changes.Count>0)
             {
                 DirectoryShell parent;
                 RightClickShell affected;
                 RightClickShellActionType type;
-                (parent,affected,type)=changes.Dequeue();
+                (parent,affected,type)=Changes.Dequeue();
                 switch (type)
                 {
                     case RightClickShellActionType.Add:
@@ -90,6 +98,11 @@ namespace RightClickShells
             {
                 throw new Exception("Cannot find the registry for Parent with that DirectoryShell");
             }
+        }
+
+        public static string CreateCommandFromSorceAndTarget(String target, String source)
+        {
+            return AppDomain.CurrentDomain.BaseDirectory + @"\Shell2.exe "+"DefaultExecute \""+ source + "\" " + target;
         }
     }
 }
