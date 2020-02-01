@@ -27,12 +27,14 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
-        {
+        {   
             this.panel1 = new System.Windows.Forms.Panel();
             this.panelTreeview = new System.Windows.Forms.Panel();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.panelFuntion = new System.Windows.Forms.Panel();
             this.panelButton = new System.Windows.Forms.Panel();
+            this.btnApply = new System.Windows.Forms.Button();
+            this.btnExpandCollapse = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnAddShortcut = new System.Windows.Forms.Button();
@@ -46,7 +48,7 @@
             this.lblTarget = new System.Windows.Forms.Label();
             this.lblSource = new System.Windows.Forms.Label();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.brnCollapseAll = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panelTreeview.SuspendLayout();
             this.panelFuntion.SuspendLayout();
@@ -91,7 +93,9 @@
             // 
             // panelButton
             // 
-            this.panelButton.Controls.Add(this.brnCollapseAll);
+            this.panelButton.Controls.Add(this.btnCancel);
+            this.panelButton.Controls.Add(this.btnApply);
+            this.panelButton.Controls.Add(this.btnExpandCollapse);
             this.panelButton.Controls.Add(this.btnDelete);
             this.panelButton.Controls.Add(this.btnEdit);
             this.panelButton.Controls.Add(this.btnAddShortcut);
@@ -102,6 +106,26 @@
             this.panelButton.Size = new System.Drawing.Size(489, 235);
             this.panelButton.TabIndex = 4;
             // 
+            // btnApply
+            // 
+            this.btnApply.Location = new System.Drawing.Point(383, 179);
+            this.btnApply.Name = "btnApply";
+            this.btnApply.Size = new System.Drawing.Size(75, 38);
+            this.btnApply.TabIndex = 8;
+            this.btnApply.Text = "Apply";
+            this.btnApply.UseVisualStyleBackColor = true;
+            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
+            // 
+            // btnExpandCollapse
+            // 
+            this.btnExpandCollapse.Location = new System.Drawing.Point(23, 25);
+            this.btnExpandCollapse.Name = "btnExpandCollapse";
+            this.btnExpandCollapse.Size = new System.Drawing.Size(128, 41);
+            this.btnExpandCollapse.TabIndex = 7;
+            this.btnExpandCollapse.Text = "Expand/Collapse";
+            this.btnExpandCollapse.UseVisualStyleBackColor = true;
+            this.btnExpandCollapse.Click += new System.EventHandler(this.btnExpandCollapse_Click);
+            // 
             // btnDelete
             // 
             this.btnDelete.Location = new System.Drawing.Point(383, 95);
@@ -110,6 +134,7 @@
             this.btnDelete.TabIndex = 4;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnEdit
             // 
@@ -137,6 +162,7 @@
             this.btnAddfolder.TabIndex = 1;
             this.btnAddfolder.Text = "Add folder";
             this.btnAddfolder.UseVisualStyleBackColor = true;
+            this.btnAddfolder.Click += new System.EventHandler(this.btnAddfolder_Click);
             // 
             // btnBrowse
             // 
@@ -213,15 +239,15 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // brnCollapseAll
+            // btnCancel
             // 
-            this.brnCollapseAll.Location = new System.Drawing.Point(23, 25);
-            this.brnCollapseAll.Name = "brnCollapseAll";
-            this.brnCollapseAll.Size = new System.Drawing.Size(101, 41);
-            this.brnCollapseAll.TabIndex = 5;
-            this.brnCollapseAll.Text = "Collapse All";
-            this.brnCollapseAll.UseVisualStyleBackColor = true;
-            this.brnCollapseAll.Click += new System.EventHandler(this.brnCollapseAll_Click);
+            this.btnCancel.Location = new System.Drawing.Point(289, 179);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 38);
+            this.btnCancel.TabIndex = 9;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // Form1
             // 
@@ -229,6 +255,7 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.panel1);
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
@@ -261,7 +288,9 @@
         private System.Windows.Forms.Label lblTarget;
         private System.Windows.Forms.Label lblSource;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.Button brnCollapseAll;
+        private System.Windows.Forms.Button btnExpandCollapse;
+        private System.Windows.Forms.Button btnApply;
+        private System.Windows.Forms.Button btnCancel;
     }
 }
 

@@ -13,32 +13,34 @@ namespace MyWindowsTools
 {
     public partial class Form1 : Form
     {
-        
+        private TreeView treeView;
+
+        public TreeView tree_view { get => treeView; set => treeView = value; }
+
         public Form1()
         {
             InitializeComponent();
         }
-        private static void PopulateTreeView(TreeView treeView, IEnumerable<string> paths, char pathSeparator)
+
+        private static void PopulateTreeView(TreeView tree_view, string path, char path_separator)
         {
-            TreeNode lastNode = null;
-            string subPathAgg;
-            foreach (string path in paths)
+            TreeNode last_node = null;
+            string sub_path_agg = string.Empty;
+            foreach (string sub_path in path.Split(path_separator))
             {
-                subPathAgg = string.Empty;
-                foreach (string subPath in path.Split(pathSeparator))
+                sub_path_agg += sub_path + path_separator;
+                TreeNode[] nodes = tree_view.Nodes.Find(key: sub_path_agg, searchAllChildren: true);
+                if (nodes.Length == 0)
                 {
-                    subPathAgg += subPath + pathSeparator;
-                    TreeNode[] nodes = treeView.Nodes.Find(key: subPathAgg,searchAllChildren: true);
-                    if (nodes.Length == 0)
-                        if (lastNode == null)
-                            lastNode = treeView.Nodes.Add(subPathAgg, subPath);
-                        else
-                            
-                            lastNode = lastNode.Nodes.Add(subPathAgg, subPath);
+                    if (last_node == null)
+                        last_node = tree_view.Nodes.Add(sub_path_agg, sub_path);
                     else
-                        lastNode = nodes[0];
+                        last_node = last_node.Nodes.Add(sub_path_agg, sub_path);
                 }
+                else
+                    last_node = nodes[0];
             }
+
         }
 
         private void btnBrowse_Click(object sender, EventArgs e)
@@ -53,27 +55,89 @@ namespace MyWindowsTools
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            var paths = new List<string>
-                        {
-                            @"a\b\c",
-                            @"a\a\a",
-                            @"a\a\b",
-                            @"a\a\c"
-                        };
-
+            string path = txtSource.Text;
             treeView1.PathSeparator = @"\";
-
-            PopulateTreeView(treeView1, paths, '\\');
-            
+            PopulateTreeView(treeView1, path, '\\');
+            tree_view = treeView1;
         }
 
-        private void brnCollapseAll_Click(object sender, EventArgs e)
+        private void btnExpandCollapse_Click(object sender, EventArgs e)
         {
-            treeView1.CollapseAll();
+            if (treeView1.SelectedNode == null)
+            {
+                bool IsExpand = false;
+                foreach (TreeNode node in treeView1.Nodes)
+                {
+                    if (node.IsExpanded)
+                    {
+                        IsExpand = true;
+                        break;
+                    }
+                }
+                if (IsExpand)
+                    treeView1.CollapseAll();
+                else
+                    treeView1.ExpandAll();
+            }
+            else
+            {
+                if (treeView1.SelectedNode.IsExpanded)
+                    treeView1.SelectedNode.Collapse();
+                else
+                    treeView1.SelectedNode.ExpandAll();
+            }
         }
+
+        private void btnApply_Click(object sender, EventArgs e)
+        {
+            tree_view = treeView1;
+        }
+
+        private void btnAddfolder_Click(object sender, EventArgs e)
+        {
+            if (treeView1.SelectedNode.IsSelected)
+            {
+                string t;
+                if (string.IsNullOrWhiteSpace(txtName.Text))
+                    MessageBox.Show("Fill name", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                else
+                {
+                    TreeNode current_node = treeView1.SelectedNode;
+                    current_node.Nodes.Add(new TreeNode(txtName.Text));
+                }
+            }
+            else
+                MessageBox.Show("Select a node", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            //if (tree_view == null)
+            //{
+            //    MessageBox.Show("There is no saved Tree", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //}
+            //else
+            //{
+            //    treeView1 = tree_view;
+            //}
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (treeView1.SelectedNode.IsSelected)
+            {
+                TreeNode current_node = treeView1.SelectedNode;
+                current_node.Remove();
+            }
+            else
+                MessageBox.Show("Select a node", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+<<<<<<< HEAD
         void A(int x,int y)
         {
 
         }
+=======
+>>>>>>> 235ee4975e43933d564adf23874f38d11570d80a
     }
 }
