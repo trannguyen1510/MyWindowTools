@@ -46,9 +46,10 @@ namespace MyWindowsTools
         private void btnBrowse_Click(object sender, EventArgs e)
         {
             DialogResult result = openFileDialog1.ShowDialog();
+
             if (result == DialogResult.OK)
             {
-                txtSource.Text = openFileDialog1.FileName;
+                lblTarget.Text = openFileDialog1.FileName;
             }
             Form1_Load(sender, e);
         }
