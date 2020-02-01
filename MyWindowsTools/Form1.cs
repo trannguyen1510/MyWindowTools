@@ -142,15 +142,16 @@ namespace MyWindowsTools
         private void btnAdd_Click(object sender, EventArgs e)
         {
             
-            if(((RightClickShell)treeView1.SelectedNode.Tag).Type != RightClickShellType.DirectoryShell)
+            
+            if (treeView1.SelectedNode!= null)
             {
-                MessageBox.Show("You Cannot Add into This.", "Error");
-                return;
-            }
-            RightClickShellType AddType = CheckRadioButton();
-            object tag = BackEndInsert(txtName.Text, AddType);
-            if (treeView1.SelectedNode.IsSelected)
-            {
+                if (((RightClickShell)treeView1.SelectedNode.Tag).Type != RightClickShellType.DirectoryShell)
+                {
+                    MessageBox.Show("You Cannot Add into This.", "Error");
+                    return;
+                }
+                RightClickShellType AddType = CheckRadioButton();
+                object tag = BackEndInsert(txtName.Text, AddType);
                 if (string.IsNullOrWhiteSpace(txtName.Text))
                 {
                     MessageBox.Show("Fill name", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -247,15 +248,16 @@ namespace MyWindowsTools
         private object BackEndInsert(String name,RightClickShellType type)
         {
             RightClickShell added;
+            RightClickShell parent=(DirectoryShell)treeView1.SelectedNode.Tag;
             switch (type)
             {
                 case RightClickShellType.DirectoryShell:
                     added = new DirectoryShell() { Name = name };
-                    insert_deleted.Add(ref cursor, ref added);
+                    insert_deleted.Add(ref parent, ref added);
                     break;
                 case RightClickShellType.ExecutableShell:
                     added = new ExecutableShell() { Name = name, Command = InsertDeleteManager.CreateCommandFromSorceAndTarget(target: txtTarget.Text,source: txtSource.Text) };
-                    insert_deleted.Add(ref cursor, ref added);
+                    insert_deleted.Add(ref parent, ref added);
                     break;
                 default:
                     added= added = new DirectoryShell() { Name = name };
