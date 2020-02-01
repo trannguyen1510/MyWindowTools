@@ -20,7 +20,7 @@ namespace RightClickShells
         /// <param name="the_inserted"></param>
         public void Add(ref RightClickShell parent,ref RightClickShell the_inserted)
         {
-            if (parent.type == RightClickShellType.ExecutableShell)
+            if (parent.Type == RightClickShellType.ExecutableShell)
                 return;
             ((DirectoryShell)parent).Children.Add(the_inserted);
             the_inserted.Parent = (DirectoryShell)parent;
@@ -62,7 +62,7 @@ namespace RightClickShells
         private void RegistryDelete(DirectoryShell parent, RightClickShell affected)
         {
             RegistryKey root = Registry.ClassesRoot.OpenSubKey(parent.getRegistryPath()+"\\shell", true);
-            root.DeleteSubKeyTree(affected.name);
+            root.DeleteSubKeyTree(affected.Name);
         }
 
         private void RegistryAdd(DirectoryShell parent, RightClickShell affected)
@@ -70,19 +70,19 @@ namespace RightClickShells
             RegistryKey root = Registry.ClassesRoot.OpenSubKey(parent.getRegistryPath()+"\\shell",true);
             if (root != null)
             {
-                switch (affected.type)
+                switch (affected.Type)
                 {
                     case RightClickShellType.DirectoryShell:
-                        root.CreateSubKey(affected.name);
-                        root = root.OpenSubKey(affected.name,true);
+                        root.CreateSubKey(affected.Name);
+                        root = root.OpenSubKey(affected.Name,true);
                         root.SetValue("subcommands", "");
                         root.CreateSubKey("shell");
                         break;
                     case RightClickShellType.ExecutableShell:
-                        root.CreateSubKey(affected.name);
-                        root = root.OpenSubKey(affected.name,true);
+                        root.CreateSubKey(affected.Name);
+                        root = root.OpenSubKey(affected.Name,true);
                         root = root.CreateSubKey("command",true);
-                        root.SetValue("", "My command");
+                        root.SetValue("", ((ExecutableShell)affected).Command);
                         break;
                 }
             }

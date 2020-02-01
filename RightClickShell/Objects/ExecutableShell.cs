@@ -17,7 +17,9 @@ namespace RightClickShells
     public class ExecutableShell : RightClickShell,ISerializable
     {
         
-        public String command;
+        private String command;
+        public String Command { get => command; set =>command = value; }
+
         public ExecutableShell()
         {
             this.type = RightClickShellType.ExecutableShell;
@@ -27,12 +29,13 @@ namespace RightClickShells
             this.name = registryKey.Name.Split('\\')[registryKey.Name.Split('\\').Length - 1];
             command = (String)registryKey.OpenSubKey("command").GetValue("");
         }
-        ExecutableShell(SerializationInfo info, StreamingContext context):base(info,context)
+        ExecutableShell(SerializationInfo info, StreamingContext context)
         {
+            this.name = info.GetString("Name");
             this.type = RightClickShellType.ExecutableShell;
             command = info.GetString("Command");
         }
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info,context);
             info.AddValue("Command", command, command.GetType());

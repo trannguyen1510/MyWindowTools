@@ -16,9 +16,12 @@ namespace RightClickShells
     public class DirectoryShell : RightClickShell, ISerializable
     {
         [XmlElement("Children")]
-        public List<RightClickShell> Children = new List<RightClickShell>();
+        public List<RightClickShell> Children { get => children; }
+
+        [XmlIgnore]private List<RightClickShell> children;
         public DirectoryShell()
         {
+            this.children = new List<RightClickShell>();
             this.type = RightClickShellType.DirectoryShell;
         }
         public DirectoryShell(Microsoft.Win32.RegistryKey registryKey)
@@ -49,20 +52,21 @@ namespace RightClickShells
 
             this.type = RightClickShellType.DirectoryShell;
         }
-        DirectoryShell(SerializationInfo info, StreamingContext context) : base(info, context)
+        DirectoryShell(SerializationInfo info, StreamingContext context)
         {
+            this.name = info.GetString("Name");
             this.type = RightClickShellType.DirectoryShell;
-            this.Children = (List<RightClickShell>)info.GetValue("Children", typeof(List<RightClickShell>));
+            this.children = (List<RightClickShell>)info.GetValue("Children", typeof(List<RightClickShell>));
             //this.SetParentForChild();
         }
 
         public void SetParentForChild()
         {
 
-            foreach (RightClickShell child in Children)
+            foreach (RightClickShell child in children)
             {
                 child.Parent = this;
-                if (child.type == RightClickShellType.DirectoryShell)
+                if (child.Type == RightClickShellType.DirectoryShell)
                 {
                     ((DirectoryShell)child).SetParentForChild();
                 }
@@ -70,7 +74,7 @@ namespace RightClickShells
             }
         }
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
             info.AddValue("Children", Children, Children.GetType());

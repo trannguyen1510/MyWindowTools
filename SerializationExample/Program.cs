@@ -20,38 +20,48 @@ namespace SerializationExample
 {
     class Program
     {
+        //biến toàn cục.
         static RightClickShell cursor;
         static DirectoryShell root;
         static InsertDeleteManager insert_deleted = new InsertDeleteManager((DirectoryShell)root);
-
+        static FileStream fs;
         static void Main(string[] args)
         {
-            //root = new DirectoryShell() { name = "Directory\\Background" };
-            root = DeSerializeTree();
-            root.SetParentForChild();
-            cursor = (DirectoryShell)root;
+            try
+            {
+                root = DeSerializeTree(); //lấy cây đã lưu.
+                
+            }
+            catch
+            {
+                fs.Close();
+                Console.WriteLine("this is a new tree.");
+                root = new DirectoryShell() { Name = "Directory\\Background" };// tạo cây mới.
+            }
+            root.SetParentForChild();// vì quá kém cõi nên phải set cha thủ công, ko thể tự động.
+            cursor = (DirectoryShell)root;// đây là con trỏ hiện tại để tui test.
             while (true)
             {
                 int input;
-                PrintMenu();
+                PrintMenu();// in menu lệnh chưa hoàn chỉnh.
                 input = int.Parse(Console.ReadLine());
                 switch (input)
                 {
                     case 1:
-                        Insert();
+                        Insert();// thêm, dựa theo cursor
                         break;
                     case 2:
-                        Delete();
+                        Delete();// xóa cursor khỏi cây.
                         break;
                     case 3:
                         PrintTree((DirectoryShell)root);
                         break;
                     case 4:
-                        CursorAccess(ref cursor);
+                        CursorAccess(ref cursor);// duyệt cây theo user.
                         break;
                     default:
-                        SerializeTree();
-                        insert_deleted.ApplyChange();
+                        SerializeTree();// lưu lại.
+                        insert_deleted.ApplyChange();// ghi vào registry
                         break;
                 }
                 if (input == 0)
@@ -81,18 +91,18 @@ namespace SerializationExample
 
         private static void PrintMap(RightClickShell cursor)
         {
-            if (cursor.type == RightClickShellType.ExecutableShell)
+            if (cursor.Type == RightClickShellType.ExecutableShell)
                 return;
            foreach(RightClickShell x in ((DirectoryShell)cursor).Children)
             {
-                Console.WriteLine(((DirectoryShell)cursor).Children.IndexOf(x).ToString()+ ". "+x.name);
+                Console.WriteLine(((DirectoryShell)cursor).Children.IndexOf(x).ToString()+ ". "+x.Name);
             }
         }
 
         public static void SerializeTree()
         {
             File.WriteAllText("BackGroundShortcuts.xml","");
-            FileStream fs = new FileStream("BackGroundShortcuts.xml", FileMode.OpenOrCreate);
+            fs = new FileStream("BackGroundShortcuts.xml", FileMode.OpenOrCreate);
             XmlSerializer xmlSerializer_background = new XmlSerializer(typeof(DirectoryShell));
             xmlSerializer_background.Serialize(fs, root);
             fs.Close();
@@ -101,7 +111,7 @@ namespace SerializationExample
         public static DirectoryShell DeSerializeTree()
         {
             XmlSerializer xmlSerializer_background = new XmlSerializer(typeof(DirectoryShell));
-            FileStream fs = new FileStream("BackGroundShortcuts.xml", FileMode.OpenOrCreate);
+            fs = new FileStream("BackGroundShortcuts.xml", FileMode.OpenOrCreate);
             DirectoryShell res = (DirectoryShell)xmlSerializer_background.Deserialize(fs);
             fs.Close();
             return res;
@@ -124,11 +134,11 @@ namespace SerializationExample
             switch (type)
             {
                 case RightClickShellType.DirectoryShell:
-                    added = new DirectoryShell() { name = name };
+                    added = new DirectoryShell() { Name = name };
                     insert_deleted.Add(ref cursor, ref added);
                     break;
                 case RightClickShellType.ExecutableShell:
-                    added = new ExecutableShell() { name = name };
+                    added = new ExecutableShell() { Name = name,Command = "MyCommand" };
                     insert_deleted.Add(ref cursor, ref added);
                     break;
             }
@@ -141,7 +151,7 @@ namespace SerializationExample
             while (queue.Count > 0)
             {
                 current = queue.Pop();
-                switch (current.type)
+                switch (current.Type)
                 {
                     case RightClickShellType.DirectoryShell:
                         foreach (RightClickShell sub in ((DirectoryShell)current).Children)
@@ -158,17 +168,19 @@ namespace SerializationExample
             }
             
         }
+
         public static string GetLevel(RightClickShell x)
         {
             String res = string.Empty;
             RightClickShell current = x.Parent;
             while(current != null)
             {
-                res = current.name+ "\\"+res ;
+                res = current.Name+ "\\"+res ;
                 current = current.Parent;
             }
             return res;
         }
+
         private static void PrintMenu()
         {
             Console.Write("Chọn 1 trong những tính năng sau:0\n" +

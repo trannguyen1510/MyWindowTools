@@ -12,25 +12,22 @@ namespace RightClickShells
 {
     //[XmlInclude(typeof(Directory))]
     [Serializable]
-    public class RightClickShell : ISerializable
+    public abstract class RightClickShell
     {
-        [XmlAttribute] public String name;
+        [XmlIgnore] protected String name;
+
+
+        [XmlAttribute] public virtual String Name { get => name; set =>name= value; }
         //[XmlAttribute] public String icon;
         //[XmlAttribute] public String position;
         //[XmlAttribute] public String ShowWhileHold;
-        [XmlIgnore] public DirectoryShell Parent = null;
-        [XmlIgnore] public RightClickShellType type;
-        public RightClickShell()
-        { 
-        }
-        public RightClickShell(SerializationInfo info, StreamingContext context)
-        {
-            name = info.GetString("Name");
-            //icon = info.GetString("Icon");
-            //ShowWhileHold = info.GetString("ShowWhileHold");
-            //position = info.GetString("position");
-        }
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        protected DirectoryShell parent = null;
+        [XmlIgnore] public virtual DirectoryShell Parent { get => parent; set => parent = value; }
+        protected RightClickShellType type;
+        [XmlIgnore] public virtual RightClickShellType Type { get => type;}
+
+
+        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue("Name", name, name.GetType());
             //info.AddValue("Icon", name, name.GetType());
@@ -38,7 +35,7 @@ namespace RightClickShells
             //info.AddValue("ShowWhileHold", ShowWhileHold, ShowWhileHold.GetType());
         }
         
-        protected RightClickShellType GetTypeOfRegistryKey(RegistryKey input)
+        protected virtual RightClickShellType GetTypeOfRegistryKey(RegistryKey input)
         {
             foreach (string s in input.GetSubKeyNames())
             {
