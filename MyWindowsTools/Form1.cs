@@ -35,8 +35,7 @@ namespace MyWindowsTools
                 MessageBox.Show("this is a new tree.","Caution",MessageBoxButtons.OK,MessageBoxIcon.Information);
                 root = new DirectoryShell() { Name = "Directory\\Background" };// tạo cây mới.
             }
-            root.SetParentForChild();// vì quá kém cõi nên phải set cha thủ công, ko thể tự động.
-            cursor = (DirectoryShell)root;// đây là con trỏ hiện tại để tui test.
+            root.SetParentForChild();// vì quá kém cõi nên phải set cha thủ công, ko thể tự động
             insert_deleted = new InsertDeleteManager((DirectoryShell)root);
             view_root = new TreeNode() { Tag = root,Text = "Root"};
             CreateViewRoot();
@@ -144,15 +143,16 @@ namespace MyWindowsTools
         private void btnAdd_Click(object sender, EventArgs e)
         {
             
-            if(((RightClickShell)treeView1.SelectedNode.Tag).Type != RightClickShellType.DirectoryShell)
+            
+            if (treeView1.SelectedNode!= null)
             {
-                MessageBox.Show("You Cannot Add into This.", "Error");
-                return;
-            }
-            RightClickShellType AddType = CheckRadioButton();
-            object tag = BackEndInsert(txtName.Text, AddType);
-            if (treeView1.SelectedNode.IsSelected)
-            {
+                if (((RightClickShell)treeView1.SelectedNode.Tag).Type != RightClickShellType.DirectoryShell)
+                {
+                    MessageBox.Show("You Cannot Add into This.", "Error");
+                    return;
+                }
+                RightClickShellType AddType = CheckRadioButton();
+                object tag = BackEndInsert(txtName.Text, AddType);
                 if (string.IsNullOrWhiteSpace(txtName.Text))
                 {
                     MessageBox.Show("Fill name", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -213,6 +213,7 @@ namespace MyWindowsTools
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
+            BackEndDelete();
             if (treeView1.SelectedNode.IsSelected)
             {
                 TreeNode current_node = treeView1.SelectedNode;
@@ -220,36 +221,8 @@ namespace MyWindowsTools
             }
             else
                 MessageBox.Show("Select a node", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            
         }
-
-
-        private void CursorAccess(ref RightClickShell cursor)
-        {
-            PrintMap(cursor);
-            int input = int.Parse(Console.ReadLine());
-            switch (input)
-            {
-                case -2:
-                    break;
-                case -1:
-                    cursor = cursor.Parent;
-                    break;
-                default:
-                    cursor = ((DirectoryShell)cursor).Children[input];
-                    break;
-            }
-        }
-
-        private void PrintMap(RightClickShell cursor)
-        {
-            if (cursor.Type == RightClickShellType.ExecutableShell)
-                return;
-            foreach (RightClickShell x in ((DirectoryShell)cursor).Children)
-            {
-                Console.WriteLine(((DirectoryShell)cursor).Children.IndexOf(x).ToString() + ". " + x.Name);
-            }
-        }
-
         public  void SerializeTree()
         {
             File.WriteAllText("BackGroundShortcuts.xml", "");
@@ -267,26 +240,25 @@ namespace MyWindowsTools
             fs.Close();
             return res;
         }
-        private  void Delete()
+        private  void BackEndDelete()
         {
-            DirectoryShell p = cursor.Parent;
-            insert_deleted.Delete(ref cursor);
-            //cursor = p;
-            //cursor.Parent.Children.Remove(cursor);
+            RightClickShell current = ((RightClickShell)treeView1.SelectedNode.Tag);
+            insert_deleted.Delete(ref current);
         }
 
         private object BackEndInsert(String name,RightClickShellType type)
         {
             RightClickShell added;
+            RightClickShell parent=(DirectoryShell)treeView1.SelectedNode.Tag;
             switch (type)
             {
                 case RightClickShellType.DirectoryShell:
                     added = new DirectoryShell() { Name = name };
-                    insert_deleted.Add(ref cursor, ref added);
+                    insert_deleted.Add(ref parent, ref added);
                     break;
                 case RightClickShellType.ExecutableShell:
                     added = new ExecutableShell() { Name = name, Command = InsertDeleteManager.CreateCommandFromSorceAndTarget(target: txtTarget.Text,source: txtSource.Text) };
-                    insert_deleted.Add(ref cursor, ref added);
+                    insert_deleted.Add(ref parent, ref added);
                     break;
                 default:
                     added= added = new DirectoryShell() { Name = name };
@@ -294,53 +266,6 @@ namespace MyWindowsTools
             }
             return added;
         }
-        public  void PrintTree(DirectoryShell root, String level_header = "")
-        {
-            RightClickShell current;
-            Stack<RightClickShell> queue = new Stack<RightClickShell>();
-            queue.Push(root);
-            while (queue.Count > 0)
-            {
-                current = queue.Pop();
-                switch (current.Type)
-                {
-                    case RightClickShellType.DirectoryShell:
-                        foreach (RightClickShell sub in ((DirectoryShell)current).Children)
-                        {
-                            queue.Push(sub);
-                        }
-                        break;
-                    default:
-                        break;
-
-                }
-                Console.WriteLine(current.getRegistryPath());
-
-            }
-
-        }
-
-        public  string GetLevel(RightClickShell x)
-        {
-            String res = string.Empty;
-            RightClickShell current = x.Parent;
-            while (current != null)
-            {
-                res = current.Name + "\\" + res;
-                current = current.Parent;
-            }
-            return res;
-        }
-
-        private  void PrintMenu()
-        {
-            Console.Write("Chọn 1 trong những tính năng sau:0\n" +
-                          "1. Thêm vào\n" +
-                          "2. Xóa \n" +
-                          "0. Thoat\n" +
-                          "---------------------------------\n");
-        }
-
         private void btnEdit_Click(object sender, EventArgs e)
         {
             MessageBox.Show("This Function is not complete yet");
