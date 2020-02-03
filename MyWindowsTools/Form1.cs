@@ -32,12 +32,12 @@ namespace MyWindowsTools
             catch
             {
                 fs.Close();
-                MessageBox.Show("this is a new tree.","Caution",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                MessageBox.Show("this is a new tree.", "Caution", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 root = new DirectoryShell() { Name = "Directory\\Background" };// tạo cây mới.
             }
             root.SetParentForChild();// vì quá kém cõi nên phải set cha thủ công, ko thể tự động
             insert_deleted = new InsertDeleteManager((DirectoryShell)root);
-            view_root = new TreeNode() { Tag = root,Text = "Root"};
+            view_root = new TreeNode() { Tag = root, Text = "Root" };
             CreateViewRoot();
             treeView1.Nodes.Add(view_root);
         }
@@ -49,16 +49,16 @@ namespace MyWindowsTools
             while (NextChild.Count != 0)
             {
                 TreeNode current = NextChild.Pop();
-                if(((RightClickShell)current.Tag).Type == RightClickShellType.DirectoryShell)
+                if (((RightClickShell)current.Tag).Type == RightClickShellType.DirectoryShell)
                 {
                     foreach (object child in ((DirectoryShell)current.Tag).Children)
                     {
-                        TreeNode new_treenode = new TreeNode() { Tag = child, Text = ((RightClickShell)child).Name};
+                        TreeNode new_treenode = new TreeNode() { Tag = child, Text = ((RightClickShell)child).Name };
                         current.Nodes.Add(new_treenode);
                         NextChild.Push(new_treenode);
                     }
                 }
-                
+
             }
         }
 
@@ -80,7 +80,6 @@ namespace MyWindowsTools
                 else
                     last_node = nodes[0];
             }
-
         }
 
         private void btnBrowse_Click(object sender, EventArgs e)
@@ -90,7 +89,16 @@ namespace MyWindowsTools
 
             if (result == DialogResult.OK)
             {
-                lblTarget.Text = openFileDialog1.FileName;
+                string path = openFileDialog1.FileName;
+                string[] sub_path = path.Split('\\');
+                string folder_path = sub_path[0];
+                for (int i = 1; i < sub_path.Length - 1; i++)
+                {
+                    folder_path += "\\" + sub_path[i];
+                }
+                
+                txtTarget.Text = path;
+                txtSource.Text = folder_path;
             }
         }
         private void btnExpandCollapse_Click(object sender, EventArgs e)
