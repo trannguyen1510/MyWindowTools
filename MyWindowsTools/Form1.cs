@@ -40,6 +40,10 @@ namespace MyWindowsTools
             view_root = new TreeNode() { Tag = root, Text = "Root" };
             CreateViewRoot();
             treeView1.Nodes.Add(view_root);
+            treeView1.ImageList = new ImageList();
+            treeView1.ImageList.Images.Add(new Bitmap(1, 1));
+            btnCancel.Hide();
+            btnApplyofEdit.Hide();
         }
 
         private void CreateViewRoot()
@@ -62,25 +66,25 @@ namespace MyWindowsTools
             }
         }
 
-        private  void PopulateTreeView(TreeView tree_view, string path, char path_separator)
-        {
-            TreeNode last_node = null;
-            string sub_path_agg = string.Empty;
-            foreach (string sub_path in path.Split(path_separator))
-            {
-                sub_path_agg += sub_path + path_separator;
-                TreeNode[] nodes = tree_view.Nodes.Find(key: sub_path_agg, searchAllChildren: true);
-                if (nodes.Length == 0)
-                {
-                    if (last_node == null)
-                        last_node = tree_view.Nodes.Add(sub_path_agg, sub_path);
-                    else
-                        last_node = last_node.Nodes.Add(sub_path_agg, sub_path);
-                }
-                else
-                    last_node = nodes[0];
-            }
-        }
+        //private  void PopulateTreeView(TreeView tree_view, string path, char path_separator)
+        //{
+        //    TreeNode last_node = null;
+        //    string sub_path_agg = string.Empty;
+        //    foreach (string sub_path in path.Split(path_separator))
+        //    {
+        //        sub_path_agg += sub_path + path_separator;
+        //        TreeNode[] nodes = tree_view.Nodes.Find(key: sub_path_agg, searchAllChildren: true);
+        //        if (nodes.Length == 0)
+        //        {
+        //            if (last_node == null)
+        //                last_node = tree_view.Nodes.Add(sub_path_agg, sub_path);
+        //            else
+        //                last_node = last_node.Nodes.Add(sub_path_agg, sub_path);
+        //        }
+        //        else
+        //            last_node = nodes[0];
+        //    }
+        //}
 
         private void btnBrowse_Click(object sender, EventArgs e)
         {
@@ -97,7 +101,7 @@ namespace MyWindowsTools
                     folder_path += "\\" + sub_path[i];
                 }
                 
-                txtTarget.Text = path;
+                txtTarget.Text = sub_path[sub_path.Length-1];
                 txtSource.Text = folder_path;
             }
         }
@@ -150,8 +154,6 @@ namespace MyWindowsTools
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            
-            
             if (treeView1.SelectedNode!= null)
             {
                 if (((RightClickShell)treeView1.SelectedNode.Tag).Type != RightClickShellType.DirectoryShell)
@@ -170,7 +172,17 @@ namespace MyWindowsTools
                 else
                 {
                     TreeNode current_node = treeView1.SelectedNode;
-                    current_node.Nodes.Add(new TreeNode("*"+txtName.Text) { Tag = tag});
+                    TreeNode target_node = new TreeNode();
+                    target_node.Text = "*" + txtName.Text;
+                    target_node.Tag = tag;
+                    current_node.Nodes.Add(target_node);
+                    if (cbIcon.Checked)
+                    {
+                        Icon icon = Icon.ExtractAssociatedIcon(txtSource.Text + "\\" + txtTarget.Text);
+                        treeView1.ImageList.Images.Add(icon);
+                        target_node.SelectedImageIndex = treeView1.ImageList.Images.Count - 1;
+                        target_node.ImageIndex = treeView1.ImageList.Images.Count - 1;
+                    }
                 }
             }
             else
@@ -178,9 +190,10 @@ namespace MyWindowsTools
                 MessageBox.Show("Select a node", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-                
-
-            
+            txtName.ResetText();
+            txtSource.ResetText();
+            txtTarget.ResetText();
+            cbIcon.Checked = false; 
         }
 
         private RightClickShellType CheckRadioButton()
@@ -276,7 +289,63 @@ namespace MyWindowsTools
         }
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("This Function is not complete yet");
+            TreeNode current_node = treeView1.SelectedNode;
+            txtName.Text = current_node.Text;
+            if (((RightClickShell)treeView1.SelectedNode.Tag).Type.ToString() == (rdBtnDirectory.Text)+"Shell")
+                rdBtnDirectory.Checked = true;
+            else rdBtnExecutable.Checked = true;
+            btnAdd.Enabled = false;
+            btnDelete.Enabled = false;
+            btnExpandCollapse.Enabled = false;
+            btnRevert.Hide();
+            btnApply.Hide();
+            btnApplyofEdit.Show();
+            btnCancel.Show();
+        }
+
+        private void btnIcon_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnRemoveIcon_Click(object sender, EventArgs e)
+        {
+            treeView1.SelectedNode.ImageIndex = 0;
+            treeView1.SelectedNode.SelectedImageIndex = 0;
+        }
+
+        private void btnApplyofEdit_Click(object sender, EventArgs e)
+        {
+            TreeNode current_node = treeView1.SelectedNode;
+            TreeNode parent = current_node.Parent;
+            current_node.Remove();
+            treeView1.SelectedNode = parent;
+            btnAdd_Click(sender, e);
+            btnAdd.Enabled = true;
+            btnDelete.Enabled = true;
+            btnExpandCollapse.Enabled = true;
+            btnCancel.Hide();
+            btnApplyofEdit.Hide();
+            btnRevert.Show();
+            btnApply.Show();
+        }
+
+        private void btnCancel_Click_1(object sender, EventArgs e)
+        {
+            btnAdd.Enabled = true;
+            btnDelete.Enabled = true;
+            btnExpandCollapse.Enabled = true;
+            btnCancel.Hide();
+            btnApplyofEdit.Hide();
+            btnRevert.Show();
+            btnApply.Show();
+            txtName.ResetText();
+            txtSource.ResetText();
+            txtTarget.ResetText();
+            cbIcon.Checked = false;
+            if (rdBtnDirectory.Checked == true)
+                rdBtnDirectory.Checked = false;
+            else rdBtnExecutable.Checked = false;
         }
     }
 }

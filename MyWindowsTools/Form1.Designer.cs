@@ -34,7 +34,7 @@
             this.panelFuntion = new System.Windows.Forms.Panel();
             this.panelButton = new System.Windows.Forms.Panel();
             this.rdBtnExecutable = new System.Windows.Forms.RadioButton();
-            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnRevert = new System.Windows.Forms.Button();
             this.rdBtnDirectory = new System.Windows.Forms.RadioButton();
             this.btnApply = new System.Windows.Forms.Button();
             this.btnExpandCollapse = new System.Windows.Forms.Button();
@@ -42,6 +42,7 @@
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.panelView = new System.Windows.Forms.Panel();
+            this.cbIcon = new System.Windows.Forms.CheckBox();
             this.txtTarget = new System.Windows.Forms.TextBox();
             this.txtSource = new System.Windows.Forms.TextBox();
             this.txtName = new System.Windows.Forms.TextBox();
@@ -50,6 +51,8 @@
             this.lblSource = new System.Windows.Forms.Label();
             this.btnBrowse = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnApplyofEdit = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panelTreeview.SuspendLayout();
             this.panelFuntion.SuspendLayout();
@@ -94,8 +97,10 @@
             // 
             // panelButton
             // 
-            this.panelButton.Controls.Add(this.rdBtnExecutable);
+            this.panelButton.Controls.Add(this.btnApplyofEdit);
             this.panelButton.Controls.Add(this.btnCancel);
+            this.panelButton.Controls.Add(this.rdBtnExecutable);
+            this.panelButton.Controls.Add(this.btnRevert);
             this.panelButton.Controls.Add(this.rdBtnDirectory);
             this.panelButton.Controls.Add(this.btnApply);
             this.panelButton.Controls.Add(this.btnExpandCollapse);
@@ -118,15 +123,15 @@
             this.rdBtnExecutable.Text = "Exacutable";
             this.rdBtnExecutable.UseVisualStyleBackColor = true;
             // 
-            // btnCancel
+            // btnRevert
             // 
-            this.btnCancel.Location = new System.Drawing.Point(35, 179);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(185, 38);
-            this.btnCancel.TabIndex = 9;
-            this.btnCancel.Text = "Revert";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.btnRevert.Location = new System.Drawing.Point(35, 179);
+            this.btnRevert.Name = "btnRevert";
+            this.btnRevert.Size = new System.Drawing.Size(185, 38);
+            this.btnRevert.TabIndex = 9;
+            this.btnRevert.Text = "Revert";
+            this.btnRevert.UseVisualStyleBackColor = true;
+            this.btnRevert.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // rdBtnDirectory
             // 
@@ -191,6 +196,7 @@
             // 
             // panelView
             // 
+            this.panelView.Controls.Add(this.cbIcon);
             this.panelView.Controls.Add(this.txtTarget);
             this.panelView.Controls.Add(this.txtSource);
             this.panelView.Controls.Add(this.txtName);
@@ -202,6 +208,16 @@
             this.panelView.Name = "panelView";
             this.panelView.Size = new System.Drawing.Size(495, 197);
             this.panelView.TabIndex = 3;
+            // 
+            // cbIcon
+            // 
+            this.cbIcon.AutoSize = true;
+            this.cbIcon.Location = new System.Drawing.Point(241, 150);
+            this.cbIcon.Name = "cbIcon";
+            this.cbIcon.Size = new System.Drawing.Size(88, 21);
+            this.cbIcon.TabIndex = 8;
+            this.cbIcon.Text = "With Icon";
+            this.cbIcon.UseVisualStyleBackColor = true;
             // 
             // txtTarget
             // 
@@ -265,6 +281,26 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(155, 179);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(92, 38);
+            this.btnCancel.TabIndex = 10;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click_1);
+            // 
+            // btnApplyofEdit
+            // 
+            this.btnApplyofEdit.Location = new System.Drawing.Point(253, 179);
+            this.btnApplyofEdit.Name = "btnApplyofEdit";
+            this.btnApplyofEdit.Size = new System.Drawing.Size(92, 38);
+            this.btnApplyofEdit.TabIndex = 11;
+            this.btnApplyofEdit.Text = "Apply";
+            this.btnApplyofEdit.UseVisualStyleBackColor = true;
+            this.btnApplyofEdit.Click += new System.EventHandler(this.btnApplyofEdit_Click);
+            // 
             // Form1
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -305,9 +341,12 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Button btnExpandCollapse;
         private System.Windows.Forms.Button btnApply;
-        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Button btnRevert;
         private System.Windows.Forms.RadioButton rdBtnExecutable;
         private System.Windows.Forms.RadioButton rdBtnDirectory;
+        private System.Windows.Forms.CheckBox cbIcon;
+        private System.Windows.Forms.Button btnApplyofEdit;
+        private System.Windows.Forms.Button btnCancel;
     }
 }
 
