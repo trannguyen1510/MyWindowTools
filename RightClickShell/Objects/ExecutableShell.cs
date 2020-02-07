@@ -33,6 +33,7 @@ namespace RightClickShells
         {
             this.name = info.GetString("Name");
             this.type = RightClickShellType.ExecutableShell;
+            this.HaveIcon = info.GetString("HaveIcon");
             command = info.GetString("Command");
         }
         public override void GetObjectData(SerializationInfo info, StreamingContext context)

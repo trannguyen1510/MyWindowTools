@@ -256,7 +256,7 @@ namespace MyWindowsTools
                     insert_deleted.Add(ref parent, ref added);
                     break;
                 case RightClickShellType.ExecutableShell:
-                    added = new ExecutableShell() { Name = name, Command = InsertDeleteManager.CreateCommandFromSorceAndTarget(target: txtTarget.Text,source: txtSource.Text) };
+                    added = new ExecutableShell() { Name = name, Command = InsertDeleteManager.CreateCommandFromSorceAndTarget(target: txtTarget.Text,source: txtSource.Text) ,HaveIcon = txtSource.Text+"\\"+txtTarget.Text};
                     insert_deleted.Add(ref parent, ref added);
                     break;
                 default:

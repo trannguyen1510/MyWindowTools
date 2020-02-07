@@ -56,6 +56,7 @@ namespace RightClickShells
         {
             this.name = info.GetString("Name");
             this.type = RightClickShellType.DirectoryShell;
+            this.HaveIcon = info.GetString("HaveIcon");
             this.children = (List<RightClickShell>)info.GetValue("Children", typeof(List<RightClickShell>));
             //this.SetParentForChild();
         }

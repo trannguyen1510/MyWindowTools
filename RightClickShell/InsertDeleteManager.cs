@@ -37,8 +37,12 @@ namespace RightClickShells
         /// <summary>
         /// List of the key to delete in a registry
         /// </summary>
-        /// <param name="parent"></param>
-        /// <param name="the_deleted"></param>
+        /// <param name="parent">
+        /// 
+        /// </param>
+        /// <param name="the_deleted">
+        /// 
+        /// </param>
         public void Delete(ref RightClickShell the_deleted)
         {
             Changes.Enqueue(new Tuple<DirectoryShell, RightClickShell, RightClickShellActionType>(the_deleted.Parent, the_deleted, RightClickShellActionType.Delete));
@@ -66,13 +70,29 @@ namespace RightClickShells
                 }
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parent">
+        /// 
+        /// </param>
+        /// <param name="affected">
+        /// 
+        /// </param>
         private void RegistryDelete(DirectoryShell parent, RightClickShell affected)
         {
             RegistryKey root = Registry.ClassesRoot.OpenSubKey(parent.getRegistryPath()+"\\shell", true);
             root.DeleteSubKeyTree(affected.Name);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parent">
+        /// 
+        /// </param>
+        /// <param name="affected">
+        /// 
+        /// </param>
         private void RegistryAdd(DirectoryShell parent, RightClickShell affected)
         {
             RegistryKey root = Registry.ClassesRoot.OpenSubKey(parent.getRegistryPath()+"\\shell",true);
@@ -89,6 +109,10 @@ namespace RightClickShells
                     case RightClickShellType.ExecutableShell:
                         root.CreateSubKey(affected.Name);
                         root = root.OpenSubKey(affected.Name,true);
+                        if (affected.HaveIcon != null)
+                        {
+                            root.SetValue("Icon", affected.HaveIcon);
+                        }
                         root = root.CreateSubKey("command",true);
                         root.SetValue("", ((ExecutableShell)affected).Command);
                         break;
@@ -102,7 +126,7 @@ namespace RightClickShells
 
         public static string CreateCommandFromSorceAndTarget(String target, String source)
         {
-            return AppDomain.CurrentDomain.BaseDirectory + @"\Shell2.exe "+"DefaultExecute \""+ source + "\" " + target;
+            return "\""+AppDomain.CurrentDomain.BaseDirectory + "\\Shell2.exe\" "+"DefaultExecute \""+ source + "\" " + target;
         }
     }
 }
