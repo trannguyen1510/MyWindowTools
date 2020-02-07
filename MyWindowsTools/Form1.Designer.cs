@@ -33,6 +33,8 @@
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.panelFuntion = new System.Windows.Forms.Panel();
             this.panelButton = new System.Windows.Forms.Panel();
+            this.btnApplyofEdit = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.rdBtnExecutable = new System.Windows.Forms.RadioButton();
             this.btnRevert = new System.Windows.Forms.Button();
             this.rdBtnDirectory = new System.Windows.Forms.RadioButton();
@@ -51,8 +53,6 @@
             this.lblSource = new System.Windows.Forms.Label();
             this.btnBrowse = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.btnApplyofEdit = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panelTreeview.SuspendLayout();
             this.panelFuntion.SuspendLayout();
@@ -112,6 +112,26 @@
             this.panelButton.Size = new System.Drawing.Size(489, 235);
             this.panelButton.TabIndex = 4;
             // 
+            // btnApplyofEdit
+            // 
+            this.btnApplyofEdit.Location = new System.Drawing.Point(253, 179);
+            this.btnApplyofEdit.Name = "btnApplyofEdit";
+            this.btnApplyofEdit.Size = new System.Drawing.Size(92, 38);
+            this.btnApplyofEdit.TabIndex = 11;
+            this.btnApplyofEdit.Text = "Apply";
+            this.btnApplyofEdit.UseVisualStyleBackColor = true;
+            this.btnApplyofEdit.Click += new System.EventHandler(this.btnApplyofEdit_Click);
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(155, 179);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(92, 38);
+            this.btnCancel.TabIndex = 10;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click_1);
+            // 
             // rdBtnExecutable
             // 
             this.rdBtnExecutable.AutoSize = true;
@@ -143,6 +163,7 @@
             this.rdBtnDirectory.TabStop = true;
             this.rdBtnDirectory.Text = "Directory";
             this.rdBtnDirectory.UseVisualStyleBackColor = true;
+            this.rdBtnDirectory.CheckedChanged += new System.EventHandler(this.rdBtnDirectory_CheckedChanged);
             // 
             // btnApply
             // 
@@ -280,26 +301,6 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // btnCancel
-            // 
-            this.btnCancel.Location = new System.Drawing.Point(155, 179);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(92, 38);
-            this.btnCancel.TabIndex = 10;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click_1);
-            // 
-            // btnApplyofEdit
-            // 
-            this.btnApplyofEdit.Location = new System.Drawing.Point(253, 179);
-            this.btnApplyofEdit.Name = "btnApplyofEdit";
-            this.btnApplyofEdit.Size = new System.Drawing.Size(92, 38);
-            this.btnApplyofEdit.TabIndex = 11;
-            this.btnApplyofEdit.Text = "Apply";
-            this.btnApplyofEdit.UseVisualStyleBackColor = true;
-            this.btnApplyofEdit.Click += new System.EventHandler(this.btnApplyofEdit_Click);
             // 
             // Form1
             // 

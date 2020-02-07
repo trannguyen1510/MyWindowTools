@@ -294,6 +294,8 @@ namespace MyWindowsTools
             if (((RightClickShell)treeView1.SelectedNode.Tag).Type.ToString() == (rdBtnDirectory.Text)+"Shell")
                 rdBtnDirectory.Checked = true;
             else rdBtnExecutable.Checked = true;
+            rdBtnDirectory.Enabled = false;
+            rdBtnExecutable.Enabled = false;
             btnAdd.Enabled = false;
             btnDelete.Enabled = false;
             btnExpandCollapse.Enabled = false;
@@ -318,7 +320,8 @@ namespace MyWindowsTools
         {
             TreeNode current_node = treeView1.SelectedNode;
             TreeNode parent = current_node.Parent;
-            current_node.Remove();
+            RightClickShell t = (RightClickShell)current_node.Tag;
+            btnDelete_Click(sender, e);
             treeView1.SelectedNode = parent;
             btnAdd_Click(sender, e);
             btnAdd.Enabled = true;
@@ -328,6 +331,8 @@ namespace MyWindowsTools
             btnApplyofEdit.Hide();
             btnRevert.Show();
             btnApply.Show();
+            rdBtnDirectory.Checked = false;
+            rdBtnExecutable.Checked = false;
         }
 
         private void btnCancel_Click_1(object sender, EventArgs e)
@@ -346,6 +351,27 @@ namespace MyWindowsTools
             if (rdBtnDirectory.Checked == true)
                 rdBtnDirectory.Checked = false;
             else rdBtnExecutable.Checked = false;
+        }
+
+        private void rdBtnDirectory_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((RadioButton)sender).Checked == true)
+            {
+                txtSource.ResetText();
+                txtSource.Enabled = false;
+                txtTarget.ResetText();
+                txtTarget.Enabled = false;
+                cbIcon.Checked = false;
+                cbIcon.Enabled = false;
+                btnBrowse.Enabled = false;
+            }
+            else
+            {
+                txtSource.Enabled = true;
+                txtTarget.Enabled = true;
+                cbIcon.Enabled = true;
+                btnBrowse.Enabled = true;
+            }
         }
     }
 }
