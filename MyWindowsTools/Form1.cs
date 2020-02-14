@@ -291,7 +291,7 @@ namespace MyWindowsTools
                     insert_deleted.Add(ref parent, ref added);
                     break;
                 default:
-                    added= added = new DirectoryShell() { Name = name };
+                    added = new DirectoryShell() { Name = name };
                     throw new Exception("not a intended rightclickshelltype");
             }
             return added;
@@ -333,11 +333,24 @@ namespace MyWindowsTools
         private void btnApplyofEdit_Click(object sender, EventArgs e)
         {
             TreeNode current_node = treeView1.SelectedNode;
-            TreeNode parent = current_node.Parent;
-            RightClickShell t = (RightClickShell)current_node.Tag;
-            btnDelete_Click(sender, e);
-            treeView1.SelectedNode = parent;
-            btnAdd_Click(sender, e);
+            RightClickShellType AddType = CheckRadioButton();
+            /* Back-end stuff*/
+
+            current_node.Text = txtName.Text;
+            if (cbIcon.Checked)
+            {
+                Icon icon = Icon.ExtractAssociatedIcon(txtSource.Text + "\\" + txtTarget.Text);
+                treeView1.ImageList.Images.Add(icon);
+                current_node.SelectedImageIndex = treeView1.ImageList.Images.Count - 1;
+                current_node.ImageIndex = treeView1.ImageList.Images.Count - 1;
+            }
+            else
+            {
+                treeView1.ImageList.Images.RemoveAt(treeView1.ImageList.Images.Count - 1);
+                current_node.SelectedImageIndex = -1;
+                current_node.ImageIndex = -1;
+            }
+
             btnAdd.Enabled = true;
             btnDelete.Enabled = true;
             btnExpandCollapse.Enabled = true;
