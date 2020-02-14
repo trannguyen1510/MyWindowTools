@@ -38,12 +38,13 @@ namespace MyWindowsTools
             root.SetParentForChild();// vì quá kém cõi nên phải set cha thủ công, ko thể tự động
             insert_deleted = new InsertDeleteManager((DirectoryShell)root);
             view_root = new TreeNode() { Tag = root, Text = "Root" };
-            CreateViewRoot();
+            
             treeView1.Nodes.Add(view_root);
             treeView1.ImageList = new ImageList();
             treeView1.ImageList.Images.Add(new Bitmap(1, 1));
             btnCancel.Hide();
             btnApplyofEdit.Hide();
+            CreateViewRoot();
         }
 
         private void CreateViewRoot()
@@ -58,8 +59,16 @@ namespace MyWindowsTools
                     foreach (object child in ((DirectoryShell)current.Tag).Children)
                     {
                         TreeNode new_treenode = new TreeNode() { Tag = child, Text = ((RightClickShell)child).Name };
+                        if (((RightClickShell)child).HaveIcon !="")
+                        {
+                            Icon icon = Icon.ExtractAssociatedIcon(((RightClickShell)child).HaveIcon);
+                            treeView1.ImageList.Images.Add(icon);
+                            new_treenode.SelectedImageIndex = treeView1.ImageList.Images.Count - 1;
+                            new_treenode.ImageIndex = treeView1.ImageList.Images.Count - 1;
+                        }
                         current.Nodes.Add(new_treenode);
                         NextChild.Push(new_treenode);
+                        
                     }
                 }
 
@@ -278,7 +287,7 @@ namespace MyWindowsTools
                     insert_deleted.Add(ref parent, ref added);
                     break;
                 case RightClickShellType.ExecutableShell:
-                    added = new ExecutableShell() { Name = name, Command = InsertDeleteManager.CreateCommandFromSorceAndTarget(target: txtTarget.Text,source: txtSource.Text) ,HaveIcon = txtSource.Text+"\\"+txtTarget.Text};
+                    added = new ExecutableShell() { Name = name, Command = ExecutableShell.CreateCommandFromSorceAndTarget(target: txtTarget.Text,source: txtSource.Text) ,HaveIcon = txtSource.Text+"\\"+txtTarget.Text};
                     insert_deleted.Add(ref parent, ref added);
                     break;
                 default:
@@ -291,9 +300,14 @@ namespace MyWindowsTools
         {
             TreeNode current_node = treeView1.SelectedNode;
             txtName.Text = current_node.Text;
-            if (((RightClickShell)treeView1.SelectedNode.Tag).Type.ToString() == (rdBtnDirectory.Text)+"Shell")
+            if (((RightClickShell)treeView1.SelectedNode.Tag).Type.ToString() == (rdBtnDirectory.Text) + "Shell")
                 rdBtnDirectory.Checked = true;
-            else rdBtnExecutable.Checked = true;
+            else
+            {
+                rdBtnExecutable.Checked = true;
+                (txtTarget.Text,txtSource.Text) = ((ExecutableShell)treeView1.SelectedNode.Tag).GetSourceAndTarget();
+                cbIcon.Checked = (((ExecutableShell)current_node.Tag).HaveIcon != "");
+            }
             rdBtnDirectory.Enabled = false;
             rdBtnExecutable.Enabled = false;
             btnAdd.Enabled = false;

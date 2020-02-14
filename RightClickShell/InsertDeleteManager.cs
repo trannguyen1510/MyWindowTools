@@ -48,6 +48,16 @@ namespace RightClickShells
             Changes.Enqueue(new Tuple<DirectoryShell, RightClickShell, RightClickShellActionType>(the_deleted.Parent, the_deleted, RightClickShellActionType.Delete));
             the_deleted.Parent.Children.Remove(the_deleted);
         }
+        public void ChangeName(ref RightClickShell change_node,String new_name) 
+        {
+            Changes.Enqueue(new Tuple<DirectoryShell, RightClickShell, RightClickShellActionType>(null, change_node, RightClickShellActionType.ChangeName));
+            change_node.Name = new_name;
+        }
+        public void ChangeCommand(ref ExecutableShell change_node, String new_command)
+        {
+            Changes.Enqueue(new Tuple<DirectoryShell, RightClickShell, RightClickShellActionType>(null, change_node, RightClickShellActionType.ChangeCommand));
+            change_node.Command = new_command;
+        }
         /// <summary>
         /// Change A registry and serialize a new tree of shells
         /// </summary>
@@ -67,9 +77,29 @@ namespace RightClickShells
                     case RightClickShellActionType.Delete:
                         RegistryDelete(parent, affected);
                         break;
+                    case RightClickShellActionType.ChangeName:
+                        RegistryChangeName(affected);
+                        break;
+                    case RightClickShellActionType.ChangeCommand:
+                        RegistryChangeCommand((ExecutableShell)affected);
+                        break;
                 }
             }
         }
+
+        private void RegistryChangeCommand(ExecutableShell affected)
+        {
+            RegistryKey x = Registry.ClassesRoot.OpenSubKey(affected.getRegistryPath() + "\\command", true);
+            x.SetValue("", affected.Command);
+            x.Close();
+        }
+
+        private void RegistryChangeName(RightClickShell affected)
+        {
+            RegistryKey x = Registry.ClassesRoot.OpenSubKey(affected.getRegistryPath(), true);
+            x.SetValue("MUIVerb", x.Name);
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -83,6 +113,7 @@ namespace RightClickShells
         {
             RegistryKey root = Registry.ClassesRoot.OpenSubKey(parent.getRegistryPath()+"\\shell", true);
             root.DeleteSubKeyTree(affected.Name);
+            root.Close();
         }
         /// <summary>
         /// 
@@ -124,9 +155,7 @@ namespace RightClickShells
             }
         }
 
-        public static string CreateCommandFromSorceAndTarget(String target, String source)
-        {
-            return "\""+AppDomain.CurrentDomain.BaseDirectory + "\\Shell2.exe\" "+"DefaultExecute \""+ source + "\" " + target;
-        }
+        
+        
     }
 }

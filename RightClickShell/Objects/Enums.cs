@@ -9,6 +9,8 @@
     public enum RightClickShellActionType
     {
         Delete=-1,
-        Add=1
+        Add=1,
+        ChangeCommand = 2,
+        ChangeName = 3
     }
 }

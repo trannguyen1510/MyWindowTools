@@ -41,5 +41,15 @@ namespace RightClickShells
             base.GetObjectData(info,context);
             info.AddValue("Command", command, command.GetType());
         }
+        public (String target, String source) GetSourceAndTarget()
+        {
+            String target = command.Split('\"')[command.Split('\"').Length - 1].Trim();
+            String source = command.Split('\"')[command.Split('\"').Length - 2].Trim();
+            return (target, source);
+        }
+        public static string CreateCommandFromSorceAndTarget(String target, String source)
+        {
+            return "\"" + AppDomain.CurrentDomain.BaseDirectory + "\\Shell2.exe\" " + "DefaultExecute \"" + source + "\" " + target;
+        }
     }
 }
