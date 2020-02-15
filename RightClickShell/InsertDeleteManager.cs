@@ -34,6 +34,7 @@ namespace RightClickShells
             the_inserted.Parent = (DirectoryShell)parent;
             Changes.Enqueue(new Tuple<DirectoryShell, RightClickShell, RightClickShellActionType>((DirectoryShell)parent, the_inserted, RightClickShellActionType.Add));
         }
+
         /// <summary>
         /// List of the key to delete in a registry
         /// </summary>
@@ -97,7 +98,7 @@ namespace RightClickShells
         private void RegistryChangeName(RightClickShell affected)
         {
             RegistryKey x = Registry.ClassesRoot.OpenSubKey(affected.getRegistryPath(), true);
-            x.SetValue("MUIVerb", x.Name);
+            x.SetValue("MUIVerb", affected.Name);
         }
 
         /// <summary>
@@ -112,7 +113,7 @@ namespace RightClickShells
         private void RegistryDelete(DirectoryShell parent, RightClickShell affected)
         {
             RegistryKey root = Registry.ClassesRoot.OpenSubKey(parent.getRegistryPath()+"\\shell", true);
-            root.DeleteSubKeyTree(affected.Name);
+            root.DeleteSubKeyTree(affected.ID);
             root.Close();
         }
         /// <summary>
@@ -132,14 +133,16 @@ namespace RightClickShells
                 switch (affected.Type)
                 {
                     case RightClickShellType.DirectoryShell:
-                        root.CreateSubKey(affected.Name);
-                        root = root.OpenSubKey(affected.Name,true);
+                        root.CreateSubKey("WMT"+affected.ID);
+                        root = root.OpenSubKey("WMT"+affected.ID,true);
+                        root.SetValue("MUIVerb", affected.Name);
                         root.SetValue("subcommands", "");
                         root.CreateSubKey("shell");
                         break;
                     case RightClickShellType.ExecutableShell:
-                        root.CreateSubKey(affected.Name);
-                        root = root.OpenSubKey(affected.Name,true);
+                        root.CreateSubKey(affected.ID);
+                        root = root.OpenSubKey(affected.ID,true);
+                        root.SetValue("MUIVerb", affected.Name);
                         if (affected.HaveIcon != null)
                         {
                             root.SetValue("Icon", affected.HaveIcon);
@@ -154,8 +157,77 @@ namespace RightClickShells
                 throw new Exception("Cannot find the registry for Parent with that DirectoryShell");
             }
         }
+        static public String GenerateIDForRegistryKey(DirectoryShell parent)
+        {
+            if (parent.Children.Count == 0)
+                return "1";
+            else
+            {
+                int max = Convert.ToInt32(parent.Children[0].ID);
+                foreach(RightClickShell child in parent.Children)
+                {
+                    int t = Convert.ToInt32(child.ID);
+                    max = (max < t) ? t : max;
+                }
+                return (max+1).ToString();
+            }
+        }
+        public object AddWithInformations(String name, String target, String source, RightClickShellType type,ref RightClickShell p,bool have_icon)
+        {
+            RightClickShell added;
+            RightClickShell parent = (DirectoryShell)p;
+            switch (type)
+            {
+                case RightClickShellType.DirectoryShell:
+                    added = new DirectoryShell(GenerateIDForRegistryKey((DirectoryShell)p)) { Name = name };
+                    Add(ref parent, ref added);
+                    break;
+                case RightClickShellType.ExecutableShell:
+                    added = new ExecutableShell(GenerateIDForRegistryKey((DirectoryShell)p)) { Name = name, 
+                                                    Command = ExecutableShell.CreateCommandFromSorceAndTarget(target: target, source: source), 
+                                                    HaveIcon = (have_icon)?source + "\\" + target :""
+                                                  };
+                    Add(ref parent, ref added);
+                    break;
+                default:
+                    added = new DirectoryShell() { Name = name };
+                    throw new Exception("not a intended rightclickshelltype");
+            }
+            return added;
+        }
 
-        
-        
+        public void EditNode(ref RightClickShell current_node, string name, string target, string source,bool haveicon)
+        {
+            DirectoryShell d_shell= null;
+            ExecutableShell e_shell = null;
+            switch (current_node.Type)
+            {
+                case RightClickShellType.DirectoryShell:
+                    d_shell = (DirectoryShell)current_node;
+                    break;
+                case RightClickShellType.ExecutableShell:
+                    e_shell = (ExecutableShell)current_node;
+                    break;
+            }
+            if (e_shell != null)
+            {
+                string old_source, old_target;
+                (old_target,old_source) = e_shell.GetSourceAndTarget();
+                
+                if (target != old_target || old_source == source)
+                {
+                    ChangeCommand(ref e_shell,ExecutableShell.CreateCommandFromSorceAndTarget(target,source));
+                }
+            }
+            if(current_node.Name != name)
+            {
+                ChangeName(ref current_node, name);
+            }
+            if((current_node.HaveIcon !="") == haveicon)
+            {
+                //TODO
+                //ChangeIconStatus();
+            }
+        }
     }
 }

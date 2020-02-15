@@ -59,7 +59,7 @@ namespace MyWindowsTools
                     foreach (object child in ((DirectoryShell)current.Tag).Children)
                     {
                         TreeNode new_treenode = new TreeNode() { Tag = child, Text = ((RightClickShell)child).Name };
-                        if (((RightClickShell)child).HaveIcon !="")
+                        if (((RightClickShell)child).HaveIcon !=null && ((RightClickShell)child).HaveIcon != "")
                         {
                             Icon icon = Icon.ExtractAssociatedIcon(((RightClickShell)child).HaveIcon);
                             treeView1.ImageList.Images.Add(icon);
@@ -171,7 +171,8 @@ namespace MyWindowsTools
                     return;
                 }
                 RightClickShellType AddType = CheckRadioButton();
-                object tag = BackEndInsert(txtName.Text, AddType);
+                RightClickShell p = (DirectoryShell)treeView1.SelectedNode.Tag;
+                object tag = insert_deleted.AddWithInformations(txtName.Text,txtTarget.Text ,txtSource.Text,AddType,ref p,cbIcon.Checked);
                 if (string.IsNullOrWhiteSpace(txtName.Text))
                 {
                     MessageBox.Show("Fill name", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -243,7 +244,8 @@ namespace MyWindowsTools
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            BackEndDelete();
+            RightClickShell current = ((RightClickShell)treeView1.SelectedNode.Tag);
+            insert_deleted.Delete(ref current);
             if (treeView1.SelectedNode.IsSelected)
             {
                 TreeNode current_node = treeView1.SelectedNode;
@@ -270,13 +272,7 @@ namespace MyWindowsTools
             fs.Close();
             return res;
         }
-        private  void BackEndDelete()
-        {
-            RightClickShell current = ((RightClickShell)treeView1.SelectedNode.Tag);
-            insert_deleted.Delete(ref current);
-        }
-
-        private object BackEndInsert(String name,RightClickShellType type)
+        private object BackEndInsert(String name,RightClickShellType type, String Target,String Source)
         {
             RightClickShell added;
             RightClickShell parent=(DirectoryShell)treeView1.SelectedNode.Tag;
@@ -335,7 +331,8 @@ namespace MyWindowsTools
             TreeNode current_node = treeView1.SelectedNode;
             RightClickShellType AddType = CheckRadioButton();
             /* Back-end stuff*/
-
+            RightClickShell current_shell = (RightClickShell)current_node.Tag;
+            insert_deleted.EditNode(ref current_shell, name: txtName.Text, target: txtTarget.Text, source: txtSource.Text);
             current_node.Text = txtName.Text;
             if (cbIcon.Checked)
             {
@@ -360,6 +357,8 @@ namespace MyWindowsTools
             btnApply.Show();
             rdBtnDirectory.Checked = false;
             rdBtnExecutable.Checked = false;
+            rdBtnDirectory.Enabled = true;
+            rdBtnExecutable.Enabled = true;
         }
 
         private void btnCancel_Click_1(object sender, EventArgs e)

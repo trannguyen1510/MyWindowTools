@@ -19,8 +19,17 @@ namespace RightClickShells
         public List<RightClickShell> Children { get => children; }
 
         [XmlIgnore]private List<RightClickShell> children;
+        public DirectoryShell(String ID)
+        {
+            id = ID;
+            this.type = RightClickShellType.ExecutableShell;
+            this.children = new List<RightClickShell>();
+            this.type = RightClickShellType.DirectoryShell;
+        }
         public DirectoryShell()
         {
+            
+            this.type = RightClickShellType.ExecutableShell;
             this.children = new List<RightClickShell>();
             this.type = RightClickShellType.DirectoryShell;
         }
@@ -54,6 +63,7 @@ namespace RightClickShells
         }
         DirectoryShell(SerializationInfo info, StreamingContext context)
         {
+            id = info.GetString("ID");
             this.name = info.GetString("Name");
             this.type = RightClickShellType.DirectoryShell;
             this.HaveIcon = info.GetString("HaveIcon");

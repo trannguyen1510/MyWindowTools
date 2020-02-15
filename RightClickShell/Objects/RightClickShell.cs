@@ -14,9 +14,10 @@ namespace RightClickShells
     [Serializable]
     public abstract class RightClickShell
     {
+        static public int count=0;
+        [XmlIgnore] protected String id="";
+        [XmlAttribute] public virtual String ID { get => id; set => id = value; }
         [XmlIgnore] protected String name;
-
-
         [XmlAttribute] public virtual String Name { get => name; set =>name= value; }
         [XmlAttribute] public String HaveIcon = null;
         //[XmlAttribute] public String position;
@@ -29,6 +30,7 @@ namespace RightClickShells
 
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
+            info.AddValue("ID", ID,id.GetType());
             info.AddValue("Name", name, name.GetType());
             info.AddValue("HaveIcon", HaveIcon, typeof(String));
             //info.AddValue("Icon", name, name.GetType());
@@ -62,12 +64,21 @@ namespace RightClickShells
         }
         public String getRegistryPath()
         {
-            String res = "\\" + this.name;
-            DirectoryShell trace_back = this.Parent;
-            while (trace_back != null)
+            String res = "";
+            if (this.id != "")
             {
-                res = "\\" + trace_back.name +"\\shell" + res;
-                trace_back = trace_back.Parent;
+                res = "\\" + this.id;
+                DirectoryShell trace_back = this.Parent;
+                while (trace_back.Parent != null)
+                {
+                    res = "\\" + trace_back.id + "\\shell" + res;
+                    trace_back = trace_back.Parent;
+                }
+                res =trace_back.name + "\\shell" + res;
+            }
+            else
+            {
+                res =this.name;
             }
             return res;
         }

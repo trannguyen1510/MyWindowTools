@@ -20,17 +20,24 @@ namespace RightClickShells
         private String command;
         public String Command { get => command; set =>command = value; }
 
+        public ExecutableShell(String ID)
+        {
+            id = ID;
+            this.type = RightClickShellType.ExecutableShell;
+        }
         public ExecutableShell()
         {
             this.type = RightClickShellType.ExecutableShell;
         }
         public ExecutableShell(RegistryKey registryKey)
         {
+
             this.name = registryKey.Name.Split('\\')[registryKey.Name.Split('\\').Length - 1];
             command = (String)registryKey.OpenSubKey("command").GetValue("");
         }
         ExecutableShell(SerializationInfo info, StreamingContext context)
         {
+            id = info.GetString("ID");
             this.name = info.GetString("Name");
             this.type = RightClickShellType.ExecutableShell;
             this.HaveIcon = info.GetString("HaveIcon");
