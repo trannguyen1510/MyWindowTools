@@ -18,7 +18,7 @@ namespace RightClickShells
 
 
         [XmlAttribute] public virtual String Name { get => name; set =>name= value; }
-        //[XmlAttribute] public String icon;
+        [XmlAttribute] public String HaveIcon = null;
         //[XmlAttribute] public String position;
         //[XmlAttribute] public String ShowWhileHold;
         protected DirectoryShell parent = null;
@@ -30,6 +30,7 @@ namespace RightClickShells
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue("Name", name, name.GetType());
+            info.AddValue("HaveIcon", HaveIcon, typeof(String));
             //info.AddValue("Icon", name, name.GetType());
             //info.AddValue("Position", position, position.GetType());
             //info.AddValue("ShowWhileHold", ShowWhileHold, ShowWhileHold.GetType());

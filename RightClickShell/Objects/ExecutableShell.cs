@@ -33,12 +33,23 @@ namespace RightClickShells
         {
             this.name = info.GetString("Name");
             this.type = RightClickShellType.ExecutableShell;
+            this.HaveIcon = info.GetString("HaveIcon");
             command = info.GetString("Command");
         }
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info,context);
             info.AddValue("Command", command, command.GetType());
+        }
+        public (String target, String source) GetSourceAndTarget()
+        {
+            String target = command.Split('\"')[command.Split('\"').Length - 1].Trim();
+            String source = command.Split('\"')[command.Split('\"').Length - 2].Trim();
+            return (target, source);
+        }
+        public static string CreateCommandFromSorceAndTarget(String target, String source)
+        {
+            return "\"" + AppDomain.CurrentDomain.BaseDirectory + "\\Shell2.exe\" " + "DefaultExecute \"" + source + "\" " + target;
         }
     }
 }
