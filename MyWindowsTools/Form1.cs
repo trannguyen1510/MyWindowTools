@@ -321,10 +321,15 @@ namespace MyWindowsTools
             TreeNode current_node = treeView1.SelectedNode;
             RightClickShellType AddType = CheckRadioButton();
             /* Back-end stuff*/
-
+            
             current_node.Text = txtName.Text;
             if (cbIcon.Checked)
             {
+                if (string.IsNullOrWhiteSpace(txtSource.Text) || string.IsNullOrWhiteSpace(txtTarget.Text))
+                {
+                    MessageBox.Show("Missing source or target", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 Icon icon = Icon.ExtractAssociatedIcon(txtSource.Text + "\\" + txtTarget.Text);
                 treeView1.ImageList.Images.Add(icon);
                 current_node.SelectedImageIndex = treeView1.ImageList.Images.Count - 1;
@@ -346,6 +351,7 @@ namespace MyWindowsTools
             btnApply.Show();
             rdBtnDirectory.Checked = false;
             rdBtnExecutable.Checked = false;
+            cbIcon.Checked = false;
         }
 
         private void btnCancel_Click_1(object sender, EventArgs e)
