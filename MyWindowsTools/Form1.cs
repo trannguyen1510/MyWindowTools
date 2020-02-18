@@ -336,6 +336,11 @@ namespace MyWindowsTools
             current_node.Text = txtName.Text;
             if (cbIcon.Checked)
             {
+                if (string.IsNullOrWhiteSpace(txtSource.Text) || string.IsNullOrWhiteSpace(txtTarget.Text))
+                {
+                    MessageBox.Show("Missing source or target", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 Icon icon = Icon.ExtractAssociatedIcon(txtSource.Text + "\\" + txtTarget.Text);
                 treeView1.ImageList.Images.Add(icon);
                 current_node.SelectedImageIndex = treeView1.ImageList.Images.Count - 1;
@@ -359,6 +364,7 @@ namespace MyWindowsTools
             rdBtnExecutable.Checked = false;
             rdBtnDirectory.Enabled = true;
             rdBtnExecutable.Enabled = true;
+            cbIcon.Checked = false;
         }
 
         private void btnCancel_Click_1(object sender, EventArgs e)
