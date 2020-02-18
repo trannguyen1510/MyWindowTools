@@ -332,7 +332,7 @@ namespace MyWindowsTools
             RightClickShellType AddType = CheckRadioButton();
             /* Back-end stuff*/
             RightClickShell current_shell = (RightClickShell)current_node.Tag;
-            insert_deleted.EditNode(ref current_shell, name: txtName.Text, target: txtTarget.Text, source: txtSource.Text);
+            insert_deleted.EditNode(ref current_shell, name: txtName.Text, target: txtTarget.Text, source: txtSource.Text,cbIcon.Checked);
             current_node.Text = txtName.Text;
             if (cbIcon.Checked)
             {

@@ -90,7 +90,9 @@ namespace RightClickShells
 
         private void RegistryChangeCommand(ExecutableShell affected)
         {
-            RegistryKey x = Registry.ClassesRoot.OpenSubKey(affected.getRegistryPath() + "\\command", true);
+            RegistryKey x = Registry.ClassesRoot.OpenSubKey(affected.getRegistryPath(), true);
+            x.SetValue("Icon", affected.HaveIcon);
+            x = x.OpenSubKey("command",true);
             x.SetValue("", affected.Command);
             x.Close();
         }
@@ -133,8 +135,8 @@ namespace RightClickShells
                 switch (affected.Type)
                 {
                     case RightClickShellType.DirectoryShell:
-                        root.CreateSubKey("WMT"+affected.ID);
-                        root = root.OpenSubKey("WMT"+affected.ID,true);
+                        root.CreateSubKey(affected.ID);
+                        root = root.OpenSubKey(affected.ID,true);
                         root.SetValue("MUIVerb", affected.Name);
                         root.SetValue("subcommands", "");
                         root.CreateSubKey("shell");
@@ -213,7 +215,14 @@ namespace RightClickShells
             {
                 string old_source, old_target;
                 (old_target,old_source) = e_shell.GetSourceAndTarget();
-                
+                if (haveicon)
+                {
+                    e_shell.HaveIcon = source + "\\" + target;
+                }
+                else
+                {
+                    e_shell.HaveIcon = "";
+                }
                 if (target != old_target || old_source == source)
                 {
                     ChangeCommand(ref e_shell,ExecutableShell.CreateCommandFromSorceAndTarget(target,source));
@@ -222,11 +231,6 @@ namespace RightClickShells
             if(current_node.Name != name)
             {
                 ChangeName(ref current_node, name);
-            }
-            if((current_node.HaveIcon !="") == haveicon)
-            {
-                //TODO
-                //ChangeIconStatus();
             }
         }
     }
