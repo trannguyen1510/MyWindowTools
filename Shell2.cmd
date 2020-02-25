@@ -26,7 +26,7 @@
 ::ZQ0/vhVqMQ3MEVWAtB9wSA==
 ::Zg8zqx1/OA3MEVWAtB9wSA==
 ::dhA7pRFwIByZRRnk
-::Zh4grVQjdCyDJGyX8VAjFDBcQwW2Lmq0OoMv2Pr05e+EtnEwTdU2dovUzae6L+8f+XnXfZMh2igUndMJbA==
+::Zh4grVQjdCyDJGyX8VAjFDBcQwW2Lmq0OoMv2Pr05e+EtnEwTdU2dovUzae6L+8f+XnJbKEk2H5Vj9g4AxRUbS6ZewESoGJH+GGdMqc=
 ::YB416Ek+ZG8=
 ::
 ::
@@ -34,14 +34,14 @@
 @echo off
 set _p=%~2
 set _d=%_p:~0,2%
-set _execute=%~3
+set _execute="%~3"
 call:%~1
 goto :eof
 
 :DefaultExecute
 %_d%
 cd %_p%
-%_execute%
+start "" %_execute%
 goto :eof
 
 :eof

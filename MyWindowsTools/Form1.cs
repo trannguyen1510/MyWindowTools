@@ -330,6 +330,17 @@ namespace MyWindowsTools
         {
             TreeNode current_node = treeView1.SelectedNode;
             RightClickShellType AddType = CheckRadioButton();
+            if(txtName.Text == String.Empty)
+            {
+                MessageBox.Show("Your Name is empty!!!","Error",MessageBoxButtons.OK ,MessageBoxIcon.Error);
+                return;
+            }
+            if (AddType == RightClickShellType.ExecutableShell)
+            {
+                if (txtSource.Text == String.Empty || txtTarget.Text == String.Empty)
+                MessageBox.Show("Your Name is empty!!!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             /* Back-end stuff*/
             RightClickShell current_shell = (RightClickShell)current_node.Tag;
             insert_deleted.EditNode(ref current_shell, name: txtName.Text, target: txtTarget.Text, source: txtSource.Text,cbIcon.Checked);

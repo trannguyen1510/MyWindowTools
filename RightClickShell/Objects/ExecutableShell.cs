@@ -56,7 +56,7 @@ namespace RightClickShells
         }
         public static string CreateCommandFromSorceAndTarget(String target, String source)
         {
-            return "\"" + AppDomain.CurrentDomain.BaseDirectory + "\\Shell2.exe\" " + "DefaultExecute \"" + source + "\" " + target;
+            return "\"" + AppDomain.CurrentDomain.BaseDirectory + "\\RunFile.exe\" " + "DefaultExecute \"" + source + "\" " + "\"" + target + "\"";
         }
     }
 }
